@@ -1,6 +1,6 @@
 ### About
 
-[![Release](https://jitpack.io/v/MFlisar/MaterialPreferences.svg)](https://jitpack.io/#MFlisar/MaterialNumberPicker)
+[![Release](https://jitpack.io/v/MFlisar/MaterialNumberPicker.svg)](https://jitpack.io/#MFlisar/MaterialNumberPicker)
 ![License](https://img.shields.io/github/license/MFlisar/MaterialNumberPicker)
 
 ### Introduction
