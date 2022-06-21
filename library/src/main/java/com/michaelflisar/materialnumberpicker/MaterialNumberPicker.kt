@@ -353,10 +353,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
                     editText.clearFocus()
                     true
                 }
-                else -> {
-                    editText.selectAll()
-                    false
-                }
+                else -> false
             }
         }
 
