@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Input 0..250 (Integer, small step = 1, large step = 5, suffix = kg) with long press repeat events enabled" />
+
+            <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
+                android:id="@+id/mnp1"
+                style="@style/MaterialNumberPicker.Filled.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_dataType="type_integer"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_max="250"
+                app:mnp_min="0"
+                app:mnp_prefix=""
+                app:mnp_stepSize="1"
+                app:mnp_stepSizeLarge="5"
+                app:mnp_suffix="kg"
+                app:mnp_value="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Input 0..250 (Float, small step = 1, large step = 1 => this means buttons for large steps are hidden, prefix = T) with long press repeat events DISABLED" />
+
+            <!-- ALL mnp_* values example -->
+            <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
+                android:id="@+id/mnp2"
+                style="@style/MaterialNumberPicker.Filled.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_dataType="type_float"
+                app:mnp_longPressRepeatClicks="false"
+                app:mnp_max="250"
+                app:mnp_min="0"
+                app:mnp_prefix="T"
+                app:mnp_stepSize="1"
+                app:mnp_stepSizeLarge="1"
+                app:mnp_suffix="z"
+                app:mnp_value="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Input 0..100 (Integer, small step = 1, large step = 5, suffix = mins) with long press repeat events enabled and custom icons + Style = Outlined" />
+
+            <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
+                android:id="@+id/mnp3"
+                style="@style/MaterialNumberPicker.Outlined.Horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_dataType="type_integer"
+                app:mnp_icon_down="@drawable/ic_baseline_more_vert_24"
+                app:mnp_icon_down_large="@drawable/ic_baseline_drag_indicator_24"
+                app:mnp_icon_up="@drawable/ic_baseline_more_vert_24"
+                app:mnp_icon_up_large="@drawable/ic_baseline_drag_indicator_24"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_max="100"
+                app:mnp_min="0"
+                app:mnp_prefix="X"
+                app:mnp_stepSize="1"
+                app:mnp_stepSizeLarge="5"
+                app:mnp_suffix="mins"
+                app:mnp_value="50" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Vertical example" />
+
+            <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
+                android:id="@+id/mnp4"
+                style="@style/MaterialNumberPicker.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_dataType="type_integer"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_max="100"
+                app:mnp_min="0"
+                app:mnp_stepSize="1"
+                app:mnp_stepSizeLarge="5"
+                app:mnp_value="50" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

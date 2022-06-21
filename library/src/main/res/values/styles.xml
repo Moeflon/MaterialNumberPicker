@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- final style -->
+
+    <style name="MaterialNumberPicker">
+        <item name="mnp_value">0</item>
+        <item name="mnp_min">0</item>
+        <item name="mnp_max">100</item>
+        <item name="mnp_stepSize">1</item>
+        <item name="mnp_stepSizeLarge">1</item>
+        <item name="mnp_longPressRepeatClicks">true</item>
+        <item name="mnp_buttonWidth">0dp</item>
+        <item name="mnp_dataType">type_integer</item>
+        <item name="mnp_editTextStyle">@style/MaterialNumberPicker.EditTextStyle</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
+
+    <style name="MaterialNumberPicker.Filled">
+        <item name="mnp_orientation">vertical</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:background">@drawable/mtrl_background_filled</item>
+        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.Filled.Horizontal">
+        <item name="mnp_orientation">horizontal</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_left_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_right_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
+        <item name="android:minHeight">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.Outlined">
+        <item name="mnp_orientation">vertical</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:background">@drawable/mtrl_background_outlined</item>
+        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.Outlined.Horizontal">
+        <item name="mnp_orientation">horizontal</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_left_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_right_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
+        <item name="android:minHeight">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.None">
+        <item name="mnp_orientation">vertical</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:background">@null</item>
+        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.None.Horizontal">
+        <item name="mnp_orientation">horizontal</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_left_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_right_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
+        <item name="android:minHeight">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <style name="MaterialNumberPicker.EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:selectAllOnFocus">true</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:inputType">numberSigned</item>
+        <item name="android:gravity">center</item>
+        <item name="android:editable">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
+
+    <style name="MaterialNumberPicker.EditTextStyle.Disabled">
+        <item name="android:selectAllOnFocus">false</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:selectable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:inputType">none</item>
+        <item name="android:editable">false</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+</resources>

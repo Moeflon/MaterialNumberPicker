@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MaterialNumberPicker">
+
+        <attr name="mnp_value" format="float" />
+        <attr name="mnp_stepSize" format="float" />
+        <attr name="mnp_stepSizeLarge" format="float" />
+        <attr name="mnp_min" format="float" />
+        <attr name="mnp_max" format="float" />
+
+        <attr name="mnp_prefix" format="string|reference" />
+        <attr name="mnp_suffix" format="string|reference" />
+
+        <attr name="mnp_editTextStyle" format="reference" />
+        <attr name="mnp_buttonWidth" format="dimension" />
+        <attr name="mnp_icon_up" format="reference" />
+        <attr name="mnp_icon_down" format="reference" />
+        <attr name="mnp_icon_up_large" format="reference" />
+        <attr name="mnp_icon_down_large" format="reference" />
+        <attr name="mnp_longPressRepeatClicks" format="boolean" />
+
+        <attr name="mnp_dataType" format="enum">
+            <enum name="type_integer" value="0" />
+            <enum name="type_float" value="1" />
+        </attr>
+
+        <attr name="mnp_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+
+        <attr name="android:background" />
+
+    </declare-styleable>
+
+    <attr name="pickerStyle" format="reference" />
+
+</resources>
