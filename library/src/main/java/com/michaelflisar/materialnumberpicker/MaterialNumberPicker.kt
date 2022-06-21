@@ -353,7 +353,10 @@ class MaterialNumberPicker @JvmOverloads constructor(
                     editText.clearFocus()
                     true
                 }
-                else -> false
+                else -> {
+                    editText.selectAll()
+                    false
+                }
             }
         }
 
@@ -419,7 +422,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
     private fun getValue(fromEditText: Boolean, callCallbacks: Boolean = true): Float {
         return if (fromEditText) {
             val newValue =
-                editText.text.toString().replace(prefix, "").replace(suffix, "").toFloat()
+                editText.text.toString().replace(prefix, "").replace(suffix, "").toFloatOrNull() ?: value
             if (isValueAllowed(newValue)) {
                 newValue
             } else {
