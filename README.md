@@ -22,11 +22,11 @@ Check out the demo app to see it in action and to see how you can set up the vie
 Here's a list of existing styles:
 
 * `style="@style/MaterialNumberPicker.Filled"`
-* `style="@style/MaterialNumberPicker.Filled.Horizontal"`
+* `style="@style/MaterialNumberPicker.Filled.Vertical"`
 * `style="@style/MaterialNumberPicker.Outlined"`
-* `style="@style/MaterialNumberPicker.Outlined.Horizontal"`
+* `style="@style/MaterialNumberPicker.Outlined.Vertical"`
 * `style="@style/MaterialNumberPicker.None"`
-* `style="@style/MaterialNumberPicker.None.Horizontal"`
+* `style="@style/MaterialNumberPicker.None.Vertical"`
 
 ```xml
 <com.michaelflisar.materialnumberpicker.MaterialNumberPicker                                          
@@ -34,7 +34,7 @@ Here's a list of existing styles:
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     // required
-    style="@style/MaterialNumberPicker.Outlined.Horizontal" // one of the 6 above mentioned styles
+    style="@style/MaterialNumberPicker.Outlined" // one of the 6 above mentioned styles
     // have defaults but you surely wan't to define those
     app:mnp_dataType="type_float" // data type of the picker (int or float)    
     app:mnp_value="50" // initial value of the picker

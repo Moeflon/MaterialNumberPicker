@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- final style -->
+    <!-- ************ -->
+    <!-- basic styles -->
+    <!-- ************ -->
 
     <style name="MaterialNumberPicker">
         <item name="mnp_value">0</item>
@@ -18,14 +20,20 @@
     </style>
 
     <style name="MaterialNumberPicker.Filled">
-        <item name="mnp_orientation">vertical</item>
-        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
-        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
-        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
-        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
         <item name="android:background">@drawable/mtrl_background_filled</item>
-        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
     </style>
+
+    <style name="MaterialNumberPicker.Outlined">
+        <item name="android:background">@drawable/mtrl_background_outlined</item>
+    </style>
+
+    <style name="MaterialNumberPicker.None">
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- ****** -->
+    <!-- styles -->
+    <!-- ****** -->
 
     <style name="MaterialNumberPicker.Filled.Horizontal">
         <item name="mnp_orientation">horizontal</item>
@@ -36,13 +44,12 @@
         <item name="android:minHeight">@dimen/mnp_min_view_size</item>
     </style>
 
-    <style name="MaterialNumberPicker.Outlined">
+    <style name="MaterialNumberPicker.Filled.Vertical">
         <item name="mnp_orientation">vertical</item>
         <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
         <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
         <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
         <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
-        <item name="android:background">@drawable/mtrl_background_outlined</item>
         <item name="android:minWidth">@dimen/mnp_min_view_size</item>
     </style>
 
@@ -55,13 +62,12 @@
         <item name="android:minHeight">@dimen/mnp_min_view_size</item>
     </style>
 
-    <style name="MaterialNumberPicker.None">
+    <style name="MaterialNumberPicker.Outlined.Vertical">
         <item name="mnp_orientation">vertical</item>
         <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
         <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
         <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
         <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
-        <item name="android:background">@null</item>
         <item name="android:minWidth">@dimen/mnp_min_view_size</item>
     </style>
 
@@ -73,6 +79,19 @@
         <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
         <item name="android:minHeight">@dimen/mnp_min_view_size</item>
     </style>
+
+    <style name="MaterialNumberPicker.None.Vertical">
+        <item name="mnp_orientation">vertical</item>
+        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+    </style>
+
+    <!-- ************* -->
+    <!-- EditTextStyle -->
+    <!-- ************* -->
 
     <style name="MaterialNumberPicker.EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
