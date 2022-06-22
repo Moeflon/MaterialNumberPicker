@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -36,12 +35,12 @@ class MaterialNumberPicker @JvmOverloads constructor(
     // -------------------
 
     // ordinal must match the array resource array values!
-    internal enum class DataType(val inputType: kotlin.Int) {
+    enum class DataType(val inputType: kotlin.Int) {
         /* 0 */ Int(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED),
         /* 1 */ Float(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL)
     }
 
-    internal class RepeatTouchListener(
+    private class RepeatTouchListener(
         private val view: View,
         private val initialDelay: Int,
         private val consecutiveDelay: Int,
@@ -86,7 +85,110 @@ class MaterialNumberPicker @JvmOverloads constructor(
             view.handler.removeCallbacks(handlerRunnable)
             view.isPressed = false
         }
+    }
 
+    private data class State(
+        val prefix: String = "",
+        val suffix: String = "",
+        val min: Float,
+        val max: Float,
+        val value: Float,
+        val stepSize: Float,
+        val stepSizeLarge: Float,
+        val type: DataType
+    ) {
+        init {
+            if (min > max) {
+                throw RuntimeException("You must provide valid min/max values, where the min value is smaller than the max value!")
+            }
+        }
+
+        val supportsLargeButtons = stepSize != stepSizeLarge
+        val digits = max(
+            abs(max).toString().length,
+            abs(min).toString().length
+        )
+
+        val charsText = prefix.length + suffix.length
+
+        fun getDisplayValue(): String {
+            return when (type) {
+                DataType.Int -> getDisplayValue(value.toInt())
+                DataType.Float -> getDisplayValue(value)
+            }
+        }
+
+        fun isValueAllowed(value: Number): Boolean {
+            return when (type) {
+                DataType.Int -> value.toInt() in (min.toInt())..(max.toInt())
+                DataType.Float -> value as Float in min..max
+            }
+        }
+
+        fun calcNewValue(adjustment: Number): Number {
+            return when (type) {
+                DataType.Int -> value.toInt() + adjustment.toInt()
+                DataType.Float -> value + adjustment as Float
+            }
+        }
+
+        fun calcButtonResult(buttonId: Int): Float {
+            val adjustment = when (buttonId) {
+                R.id.number_picker_button_up -> stepSize
+                R.id.number_picker_button_up_large -> stepSizeLarge
+                R.id.number_picker_button_down -> stepSize
+                R.id.number_picker_button_down_large -> stepSizeLarge
+                else -> throw RuntimeException("Unhandled button view!")
+            }
+            val increase = when (buttonId) {
+                R.id.number_picker_button_up,
+                R.id.number_picker_button_up_large -> true
+                R.id.number_picker_button_down,
+                R.id.number_picker_button_down_large -> false
+                else -> throw RuntimeException("Unhandled button view!")
+            }
+            return when (type) {
+                DataType.Int -> value.toInt() + adjustment.toInt() * if (increase) 1 else -1
+                DataType.Float -> value + adjustment * if (increase) 1f else -1f
+            }.toFloat()
+        }
+
+        // ---------------------
+        // format functions for all possible data types
+        // ---------------------
+
+        fun getDisplayValue(value: Number): String {
+            return when (value) {
+                is Int -> getDisplayValue(value)
+                is Float -> getDisplayValue(value)
+                else -> throw RuntimeException("Class ${value.javaClass} not handled!")
+            }
+        }
+
+        fun getDisplayValue(value: Int): String {
+            val valueAsString = value.toString()
+            return prefix + valueAsString + suffix
+        }
+
+        fun getDisplayValue(value: Float): String {
+            val valueAsString = if (value.toInt().toFloat() == value)
+                value.toInt().toString()
+            else
+                value.toString()
+
+            return prefix + valueAsString + suffix
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        fun parseValue(editText: EditText): Float? {
+            val possibleValueAsString =
+                editText.text.toString().replace(prefix, "").replace(suffix, "")
+            val newValue = when (type) {
+                DataType.Int -> possibleValueAsString.toIntOrNull()?.toFloat()
+                DataType.Float -> possibleValueAsString.toFloatOrNull()
+            }
+            return newValue
+        }
     }
 
     // -------------------
@@ -96,13 +198,13 @@ class MaterialNumberPicker @JvmOverloads constructor(
     /*
      * listener that is called whenever this pickers value is changed
      */
-    var onValueChangedListener: ((picker: MaterialNumberPicker, value: Float, fromUser: Boolean) -> Unit)? =
+    var onValueChangedListener: ((picker: MaterialNumberPicker, value: Number, fromUser: Boolean) -> Unit)? =
         null
 
     /*
      * listener that is called whenever the user inputs an invalid value in the EditText directly (outside of {@min} and {@max})
      */
-    var onInvalidValueSelected: ((invalidValue: Float, fromButton: Boolean) -> Unit)? = null
+    var onInvalidValueSelected: ((invalidValue: Number, fromButton: Boolean) -> Unit)? = null
 
     /*
      * listener that is called, whenever this pickers internal EditText's focus is changed
@@ -135,54 +237,54 @@ class MaterialNumberPicker @JvmOverloads constructor(
     var closeKeyboardOnNewValueSet: Boolean = true
 
     // -------------------
-    // public settings and fields
+    // getter/setter/update functions
     // -------------------
 
-    /*
-     * define a prefix that is displayed before the number
-     */
-    private var prefix: String = ""
+    val type: DataType
+        get() = state.type
 
-    /*
-     * define a suffix that is displayed after the number
-     */
-    private var suffix: String = ""
+    val value: Number
+        get() = state.value
 
-    /*
-     * the mimimum allowed number
-     */
-    private var min: Float = 0f
+    fun setValue(value: Number): Boolean {
+        if (!state.isValueAllowed(value))
+            return false
+        updateValue(value.toFloat(), true)
+        return true
+    }
 
-    /*
-     * the maximum allowed number
-     */
-    private var max: Float = 100f
+    val min: Number
+        get() = state.min
 
-    /*
-     * the current value
-     */
-    private var value: Float = 0f
+    val max: Number
+        get() = state.max
 
-    /*
-     * the step size of the primary up/down buttons
-     */
-    private var stepSize: Float = 1f
+    fun updateMinMax(min: Number, max: Number, value: Number): Boolean {
+        state = state.copy(min = min.toFloat(), max = max.toFloat(), value = value.toFloat())
+        updateEditTextDisplayValue()
+        return true
+    }
 
-    /*
-     * the step size of the secondary up/down buttons
-     *
-     * if this step size is the same as the primary step size, secondary buttons won't be shown!
-     */
-    private var stepSizeLarge: Float = 1f
+    var prefix: String
+        get() = state.prefix
+        set(value) {
+            state = state.copy(prefix = value)
+            onPrefixChanged()
+        }
 
-    /*
-     * the data type of this picker (Int or Float)
-     */
-    private var type: DataType = DataType.Int
+    var suffix: String
+        get() = state.suffix
+        set(value) {
+            state = state.copy(suffix = value)
+            onSuffixChanged()
+        }
 
-    /*
-     * the style of the inner EditText view
-     */
+    // -------------------
+    // private state and variables
+    // -------------------
+
+    private lateinit var state: State
+
     private var editTextStyleId: Int = 0
 
     private lateinit var editText: EditText
@@ -210,13 +312,41 @@ class MaterialNumberPicker @JvmOverloads constructor(
 
         try {
 
-            min = array.getFloat(R.styleable.MaterialNumberPicker_mnp_min, 100f)
-            max = array.getFloat(R.styleable.MaterialNumberPicker_mnp_max, 0f)
-            stepSize = array.getFloat(R.styleable.MaterialNumberPicker_mnp_stepSize, 1f)
-            stepSizeLarge = array.getFloat(R.styleable.MaterialNumberPicker_mnp_stepSizeLarge, 1f)
+            val min = array.getFloat(R.styleable.MaterialNumberPicker_mnp_min, 100f)
+            val max = array.getFloat(R.styleable.MaterialNumberPicker_mnp_max, 0f)
+            val stepSize = array.getFloat(R.styleable.MaterialNumberPicker_mnp_stepSize, 1f)
+            val stepSizeLarge =
+                array.getFloat(R.styleable.MaterialNumberPicker_mnp_stepSizeLarge, 1f)
+            val prefix = array.getString(R.styleable.MaterialNumberPicker_mnp_prefix) ?: ""
+            val suffix = array.getString(R.styleable.MaterialNumberPicker_mnp_suffix) ?: ""
+            val type = DataType.values()[array.getInteger(
+                R.styleable.MaterialNumberPicker_mnp_dataType,
+                DataType.Int.ordinal
+            )]
+            val value = array.getFloat(R.styleable.MaterialNumberPicker_mnp_value, 0f)
 
-            prefix = array.getString(R.styleable.MaterialNumberPicker_mnp_prefix) ?: ""
-            suffix = array.getString(R.styleable.MaterialNumberPicker_mnp_suffix) ?: ""
+            state = when (type) {
+                DataType.Int -> State(
+                    prefix,
+                    suffix,
+                    min.toInt().toFloat(),
+                    max.toInt().toFloat(),
+                    value.toInt().toFloat(),
+                    stepSize.toInt().toFloat(),
+                    stepSizeLarge.toInt().toFloat(),
+                    DataType.Int
+                )
+                DataType.Float -> State(
+                    prefix,
+                    suffix,
+                    min,
+                    max,
+                    value,
+                    stepSize,
+                    stepSizeLarge,
+                    DataType.Float
+                )
+            }
 
             longPressRepeatClicks =
                 array.getBoolean(R.styleable.MaterialNumberPicker_mnp_longPressRepeatClicks, true)
@@ -239,19 +369,10 @@ class MaterialNumberPicker @JvmOverloads constructor(
                 R.styleable.MaterialNumberPicker_mnp_editTextStyle,
                 R.style.MaterialNumberPicker_EditTextStyle
             )
-            type = DataType.values()[array.getInteger(
-                R.styleable.MaterialNumberPicker_mnp_dataType,
-                DataType.Int.ordinal
-            )]
-
             inflateChildren(buttonWidth, iconUp, iconDown, iconUpLarge, iconDownLarge)
-
-            value = array.getFloat(R.styleable.MaterialNumberPicker_mnp_value, 0f)
-            editText.setText(getDisplayValue())
-
-
+            editText.setText(state.getDisplayValue())
         } catch (e: Exception) {
-            Log.d("MaterialNumberPicker", e.toString())
+            //
         } finally {
             array.recycle()
         }
@@ -274,7 +395,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
         val buttonsUp = ArrayList<Pair<Int, Int>>()
         buttonsDown.add(Pair(R.id.number_picker_button_down, iconDown))
         buttonsUp.add(Pair(R.id.number_picker_button_up, iconUp))
-        if (stepSize != stepSizeLarge) {
+        if (state.supportsLargeButtons) {
             buttonsDown.add(0, Pair(R.id.number_picker_button_down_large, iconDownLarge))
             buttonsUp.add(Pair(R.id.number_picker_button_up_large, iconUpLarge))
         }
@@ -308,17 +429,14 @@ class MaterialNumberPicker @JvmOverloads constructor(
             btHeight = tmp
         }
 
-        val digits = max(abs(max).toString().length, abs(min).toString().length)
-        val charText = prefix.length + suffix.length
-
         editText = EditText(ContextThemeWrapper(context, editTextStyleId), null, 0)
         //editText.id = R.id.number_picker_edit_text
         editText.setLines(1)
 
         if (!useHintTrick) {
-            editText.setEms(charText + digits + emsAdjustment)
+            editText.setEms(state.charsText + state.digits + emsAdjustment)
         } else {
-            editText.hint = prefix + ("0.".repeat(digits)) + suffix
+            editText.hint = state.prefix + ("0.".repeat(state.digits)) + state.suffix
             editText.setHintTextColor(Color.TRANSPARENT)
         }
 
@@ -326,7 +444,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
         editText.isFocusable = true
         editText.isClickable = true
         editText.isLongClickable = false
-        editText.inputType = type.inputType
+        editText.inputType = state.type.inputType
 
         editText.setOnFocusChangeListener { _, hasFocus ->
             setBackgroundFocused(hasFocus)
@@ -334,13 +452,13 @@ class MaterialNumberPicker @JvmOverloads constructor(
             if (!hasFocus) {
                 if (!editText.text.isNullOrEmpty()) {
                     val newValue = getValue(true)
-                    if (newValue != value) {
+                    if (newValue != state.value) {
                         updateValue(newValue, true)
                     } else {
                         restoreValue()
                     }
                 } else {
-                    editText.setText(getDisplayValue())
+                    editText.setText(state.getDisplayValue())
                 }
             }
 
@@ -360,11 +478,14 @@ class MaterialNumberPicker @JvmOverloads constructor(
         val p0 = LayoutParams(btWidth, btHeight)
         p0.weight = 0f
 
-        val p1 = if (orientation == HORIZONTAL) LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT) else LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 0)
+        val p1 = if (orientation == HORIZONTAL) LayoutParams(
+            0,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        ) else LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 0)
         p1.weight = 1f
 
-        val buttonsBefore = if (orientation == HORIZONTAL) buttonsDown else buttonsUp
-        val buttonsAfter = if (orientation == HORIZONTAL) buttonsUp else buttonsDown
+        val buttonsBefore = if (orientation == HORIZONTAL) buttonsDown else buttonsUp.asReversed()
+        val buttonsAfter = if (orientation == HORIZONTAL) buttonsUp else buttonsDown.asReversed()
 
         buttonsBefore.forEach {
             addView(createButton(it.first, it.second), p0)
@@ -375,16 +496,19 @@ class MaterialNumberPicker @JvmOverloads constructor(
         }
     }
 
-    private fun updateValue(newValue: Float, fromUser: Boolean = true) {
-        val newDisplayValue = getDisplayValue(newValue)
-        val valueChanged = newValue != value
+    private fun updateValue(
+        newValue: Float,
+        fromUser: Boolean
+    ) {
+        val newDisplayValue = state.getDisplayValue(newValue)
+        val valueChanged = newValue != state.value
         val textChanged = editText.text.toString() != newDisplayValue
         if (valueChanged || textChanged) {
-            value = newValue
+            state = state.copy(value = newValue)
             if (textChanged) {
                 editText.setText(newDisplayValue)
             }
-            onValueChangedListener?.invoke(this, value, fromUser)
+            onValueChangedListener?.invoke(this, newValue, fromUser)
             if (closeKeyboardOnNewValueSet) {
                 editText.clearFocus()
                 requestFocus()
@@ -394,46 +518,46 @@ class MaterialNumberPicker @JvmOverloads constructor(
     }
 
     private fun restoreValue() {
-        val displayValue = getDisplayValue(value)
+        val displayValue = state.getDisplayValue()
         val text = editText.text.toString()
         if (text != displayValue) {
             editText.setText(displayValue)
         }
     }
 
-// -----------
-// format functions
-// -----------
-
-    private fun getDisplayValue(): String {
-        return getDisplayValue(value)
-    }
-
-    private fun getDisplayValue(value: Float): String {
-        if (value.toInt().toFloat() == value) {
-            return prefix + value.toInt().toString() + suffix
-        }
-        return prefix + value.toString() + suffix
-    }
-
     private fun getValue(fromEditText: Boolean, callCallbacks: Boolean = true): Float {
         return if (fromEditText) {
-            val newValue =
-                editText.text.toString().replace(prefix, "").replace(suffix, "").toFloatOrNull() ?: value
-            if (isValueAllowed(newValue)) {
-                newValue
-            } else {
+            val oldValue = state.value
+            val newValue = state.parseValue(editText)
+            if (newValue == null || !state.isValueAllowed(newValue)) {
                 if (callCallbacks) {
-                    onInvalidValueSelected?.invoke(newValue, false)
+                    onInvalidValueSelected?.invoke(newValue ?: 0f, false)
                 }
-                value
-            }
-        } else value
+                oldValue
+            } else newValue
+        } else state.value
     }
 
-// -----------
-// Others
-// -----------
+    // -----------
+    // Events
+    // -----------
+
+    private fun onPrefixChanged() {
+        updateEditTextDisplayValue()
+    }
+
+    private fun onSuffixChanged() {
+        updateEditTextDisplayValue()
+    }
+
+    private fun updateEditTextDisplayValue() {
+        val displayValue = state.getDisplayValue()
+        editText.setText(displayValue)
+    }
+
+    // -----------
+    // Others
+    // -----------
 
     private fun hideKeyboard() {
         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -447,34 +571,23 @@ class MaterialNumberPicker @JvmOverloads constructor(
         // => so we get the value from the EditText manually here before we clear the focus
         val v = if (!editText.text.isNullOrEmpty() && editText.hasFocus()) {
             getValue(true, false)
-        } else value
-        value = v
+        } else state.value
+        state = state.copy(value = v)
         requestFocus()
         editText.clearFocus()
 
-        val adjustment = when (buttonId) {
-            R.id.number_picker_button_up -> stepSize
-            R.id.number_picker_button_up_large -> stepSizeLarge
-            R.id.number_picker_button_down -> stepSize * -1f
-            R.id.number_picker_button_down_large -> stepSizeLarge * -1f
-            else -> throw RuntimeException("Unhandled button view!")
-        }
-        val newValue = value + adjustment
-        val result = if (isValueAllowed(newValue)) {
-            updateValue(newValue)
-            true
-        } else {
+        val newValue = state.calcButtonResult(buttonId)
+        val result = if (!state.isValueAllowed(newValue)) {
             onInvalidValueSelected?.invoke(newValue, true)
             false
+        } else {
+            updateValue(newValue, true)
+            true
         }
         if (closeKeyboardOnUpDownClicks) {
             hideKeyboard()
         }
         return result
-    }
-
-    private fun isValueAllowed(value: Float): Boolean {
-        return value in min..max
     }
 
     private fun setBackgroundFocused(hasFocus: Boolean) {
