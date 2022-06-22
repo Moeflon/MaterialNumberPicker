@@ -120,7 +120,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
         fun isValueAllowed(value: Number): Boolean {
             return when (type) {
                 DataType.Int -> value.toInt() in (min.toInt())..(max.toInt())
-                DataType.Float -> value as Float in min..max
+                DataType.Float -> value.toFloat() in min..max
             }
         }
 
