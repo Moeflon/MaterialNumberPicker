@@ -34,7 +34,7 @@
 
             <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
                 android:id="@+id/mnp1"
-                style="@style/MaterialNumberPicker.Filled.Horizontal"
+                style="@style/MaterialNumberPicker.Horizontal.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -59,7 +59,7 @@
             <!-- ALL mnp_* values example -->
             <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
                 android:id="@+id/mnp2"
-                style="@style/MaterialNumberPicker.Filled.Horizontal"
+                style="@style/MaterialNumberPicker.Horizontal.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -83,7 +83,7 @@
 
             <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
                 android:id="@+id/mnp3"
-                style="@style/MaterialNumberPicker.Outlined.Horizontal"
+                style="@style/MaterialNumberPicker.Horizontal.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -111,7 +111,7 @@
 
             <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
                 android:id="@+id/mnp4"
-                style="@style/MaterialNumberPicker.Filled.Vertical"
+                style="@style/MaterialNumberPicker.Vertical.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -133,7 +133,7 @@
 
             <com.michaelflisar.materialnumberpicker.MaterialNumberPicker
                 android:id="@+id/mnp5"
-                style="@style/MaterialNumberPicker.Filled.Horizontal"
+                style="@style/MaterialNumberPicker.Horizontal.None"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

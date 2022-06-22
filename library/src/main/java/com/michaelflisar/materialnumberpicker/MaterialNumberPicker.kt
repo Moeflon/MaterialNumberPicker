@@ -22,7 +22,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.pickerStyle,
-    defStyleRes: Int = R.style.MaterialNumberPicker_Filled
+    defStyleRes: Int = R.style.MaterialNumberPicker_Horizontal_Filled
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
