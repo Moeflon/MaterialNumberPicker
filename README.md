@@ -107,7 +107,6 @@ repositories {
 2. add the compile statement to your module's `build.gradle`:
 ```groovy
 dependencies {
-
   implementation "com.github.MFlisar:MaterialNumberPicker:<LATEST-VERSION>"
 }
 ```
