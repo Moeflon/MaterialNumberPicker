@@ -42,8 +42,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
 
     private class RepeatTouchListener(
         private val view: View,
-        private val initialDelay: Int,
-        private val consecutiveDelay: Int,
+        private val picker: MaterialNumberPicker,
         private val onEvent: (view: View) -> Boolean
     ) : OnTouchListener {
 
@@ -54,7 +53,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
                 if (view.isEnabled) {
                     val success = onEvent(view)
                     if (success) {
-                        view.handler.postDelayed(handlerRunnable, consecutiveDelay.toLong())
+                        view.handler.postDelayed(handlerRunnable, picker.repeatClicksConsecutiveDelay.toLong())
                     } else {
                         stop()
                     }
@@ -68,7 +67,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     view.handler.removeCallbacks(handlerRunnable)
-                    view.handler.postDelayed(handlerRunnable, initialDelay.toLong())
+                    view.handler.postDelayed(handlerRunnable, picker.repeatClicksFirstDelay.toLong())
                     view.isPressed = true
                     onEvent(view)
                     return true
@@ -98,8 +97,8 @@ class MaterialNumberPicker @JvmOverloads constructor(
         val type: DataType
     ) {
         init {
-            if (min > max) {
-                throw RuntimeException("You must provide valid min/max values, where the min value is smaller than the max value!")
+            if (min > max || value < min || value > max) {
+                throw RuntimeException("You must provide a valid value and min/max values, where the min value is smaller than the max value and the value is inside its range!")
             }
         }
 
@@ -259,10 +258,9 @@ class MaterialNumberPicker @JvmOverloads constructor(
     val max: Number
         get() = state.max
 
-    fun setMinMax(min: Number, max: Number, value: Number): Boolean {
+    fun setMinMax(min: Number, max: Number, value: Number) {
         state = state.copy(min = min.toFloat(), max = max.toFloat(), value = value.toFloat())
         updateEditTextDisplayValue()
-        return true
     }
 
     val stepSize: Number
@@ -487,8 +485,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
                     setOnTouchListener(
                         RepeatTouchListener(
                             this,
-                            repeatClicksFirstDelay,
-                            repeatClicksConsecutiveDelay
+                            this@MaterialNumberPicker
                         ) {
                             onButtonEvent(it.id)
                         })
