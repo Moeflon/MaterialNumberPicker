@@ -40,10 +40,13 @@ class DemoActivity : AppCompatActivity() {
 
         // updating values
         // mnp4 is of type integer => you can provide any Number but they will be converted to whatever the picker supports!
-        binding.mnp4.updateMinMax(100, 1000, 500)
+        binding.mnp4.setMinMax(100, 1000, 500)
         binding.mnp4.setValue(600) // this triggers the onValueChangedListener!
         binding.mnp4.prefix = "N="
         binding.mnp4.suffix = ""
+
+        binding.mnp5.setSingleStepSize(10) // same as setStepSizes(10, 10)
+        binding.mnp5.setStepSizes(10, 20)
     }
 
     private fun showToast(info: String) {

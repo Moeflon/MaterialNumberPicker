@@ -259,10 +259,33 @@ class MaterialNumberPicker @JvmOverloads constructor(
     val max: Number
         get() = state.max
 
-    fun updateMinMax(min: Number, max: Number, value: Number): Boolean {
+    fun setMinMax(min: Number, max: Number, value: Number): Boolean {
         state = state.copy(min = min.toFloat(), max = max.toFloat(), value = value.toFloat())
         updateEditTextDisplayValue()
         return true
+    }
+
+    val stepSize: Number
+        get() = state.stepSize
+
+    val stepSizeLarge: Number
+        get() = state.stepSizeLarge
+
+    /*
+     * set one step size for the buttons - by setting a single step size only, the additional buttons for the large step size won't show up
+     */
+    fun setSingleStepSize(stepSize: Number) {
+        state = state.copy(stepSize = stepSize.toFloat(), stepSizeLarge = stepSize.toFloat())
+        onStepSizesChanged()
+    }
+
+    /*
+     * set two step size for the buttons - by setting them to the same value, the additional buttons for the large step size won't show up
+     * use {@setSingleStepSize} for this case though
+     */
+    fun setStepSizes(stepSize: Number, stepSizeLarge: Number) {
+        state = state.copy(stepSize = stepSize.toFloat(), stepSizeLarge = stepSizeLarge.toFloat())
+        onStepSizesChanged()
     }
 
     var prefix: String
@@ -279,14 +302,22 @@ class MaterialNumberPicker @JvmOverloads constructor(
             onSuffixChanged()
         }
 
+    fun clearFocus() {
+        editText.clearFocus()
+        requestFocus()
+    }
+
     // -------------------
     // private state and variables
     // -------------------
 
     private lateinit var state: State
-
     private var editTextStyleId: Int = 0
-
+    private var buttonWidth: Int = 0
+    private var iconUp: Int = 0
+    private var iconDown: Int = 0
+    private var iconUpLarge: Int = 0
+    private var iconDownLarge: Int = 0
     private lateinit var editText: EditText
 
     // -------------------
@@ -351,25 +382,25 @@ class MaterialNumberPicker @JvmOverloads constructor(
             longPressRepeatClicks =
                 array.getBoolean(R.styleable.MaterialNumberPicker_mnp_longPressRepeatClicks, true)
 
-            val buttonWidth =
+            buttonWidth =
                 array.getDimension(R.styleable.MaterialNumberPicker_mnp_buttonWidth, 0f).toInt()
 
             orientation =
                 array.getInteger(R.styleable.MaterialNumberPicker_mnp_orientation, VERTICAL)
             background = array.getDrawable(R.styleable.MaterialNumberPicker_android_background)
 
-            val iconUp = array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_up, 0)
-            val iconDown = array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_down, 0)
-            val iconUpLarge =
+            iconUp = array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_up, 0)
+            iconDown = array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_down, 0)
+            iconUpLarge =
                 array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_up_large, 0)
-            val iconDownLarge =
+            iconDownLarge =
                 array.getResourceId(R.styleable.MaterialNumberPicker_mnp_icon_down_large, 0)
 
             editTextStyleId = array.getResourceId(
                 R.styleable.MaterialNumberPicker_mnp_editTextStyle,
                 R.style.MaterialNumberPicker_EditTextStyle
             )
-            inflateChildren(buttonWidth, iconUp, iconDown, iconUpLarge, iconDownLarge)
+            inflateChildren()
             editText.setText(state.getDisplayValue())
         } catch (e: Exception) {
             //
@@ -378,57 +409,13 @@ class MaterialNumberPicker @JvmOverloads constructor(
         }
     }
 
-    private fun inflateChildren(
-        buttonWidth: Int,
-        iconUp: Int,
-        iconDown: Int,
-        iconUpLarge: Int,
-        iconDownLarge: Int
-    ) {
+    private fun inflateChildren() {
 
         // inner setup
         val useHintTrick = true
         val emsAdjustment = -2
 
-        // Buttons
-        val buttonsDown = ArrayList<Pair<Int, Int>>()
-        val buttonsUp = ArrayList<Pair<Int, Int>>()
-        buttonsDown.add(Pair(R.id.number_picker_button_down, iconDown))
-        buttonsUp.add(Pair(R.id.number_picker_button_up, iconUp))
-        if (state.supportsLargeButtons) {
-            buttonsDown.add(0, Pair(R.id.number_picker_button_down_large, iconDownLarge))
-            buttonsUp.add(Pair(R.id.number_picker_button_up_large, iconUpLarge))
-        }
-        val createButton = { id: Int, icon: Int ->
-            AppCompatImageButton(context).apply {
-                this.id = id
-                setImageResource(icon)
-                setBackgroundResource(R.drawable.mnp_button_background)
-                if (longPressRepeatClicks) {
-                    setOnTouchListener(
-                        RepeatTouchListener(
-                            this,
-                            repeatClicksFirstDelay,
-                            repeatClicksConsecutiveDelay
-                        ) {
-                            onButtonEvent(it.id)
-                        })
-                } else {
-                    setOnClickListener {
-                        onButtonEvent(it.id)
-                    }
-                }
-            }
-        }
-
-        var btWidth = if (buttonWidth > 0) buttonWidth else ViewGroup.LayoutParams.WRAP_CONTENT
-        var btHeight = ViewGroup.LayoutParams.MATCH_PARENT
-        if (orientation == VERTICAL) {
-            val tmp = btWidth
-            btWidth = btHeight
-            btHeight = tmp
-        }
-
+        // EditText
         editText = EditText(ContextThemeWrapper(context, editTextStyleId), null, 0)
         //editText.id = R.id.number_picker_edit_text
         editText.setLines(1)
@@ -475,18 +462,61 @@ class MaterialNumberPicker @JvmOverloads constructor(
             }
         }
 
+        // Buttons
+        initSubViews(true)
+    }
+
+    private fun initSubViews(initial: Boolean) {
+        if (!initial) {
+            removeAllViews()
+        }
+        val buttonsDown = ArrayList<Pair<Int, Int>>()
+        val buttonsUp = ArrayList<Pair<Int, Int>>()
+        buttonsDown.add(Pair(R.id.number_picker_button_down, iconDown))
+        buttonsUp.add(Pair(R.id.number_picker_button_up, iconUp))
+        if (state.supportsLargeButtons) {
+            buttonsDown.add(0, Pair(R.id.number_picker_button_down_large, iconDownLarge))
+            buttonsUp.add(Pair(R.id.number_picker_button_up_large, iconUpLarge))
+        }
+        val createButton = { id: Int, icon: Int ->
+            AppCompatImageButton(context).apply {
+                this.id = id
+                setImageResource(icon)
+                setBackgroundResource(R.drawable.mnp_button_background)
+                if (longPressRepeatClicks) {
+                    setOnTouchListener(
+                        RepeatTouchListener(
+                            this,
+                            repeatClicksFirstDelay,
+                            repeatClicksConsecutiveDelay
+                        ) {
+                            onButtonEvent(it.id)
+                        })
+                } else {
+                    setOnClickListener {
+                        onButtonEvent(it.id)
+                    }
+                }
+            }
+        }
+
+        var btWidth = if (buttonWidth > 0) buttonWidth else ViewGroup.LayoutParams.WRAP_CONTENT
+        var btHeight = ViewGroup.LayoutParams.MATCH_PARENT
+        if (orientation == VERTICAL) {
+            val tmp = btWidth
+            btWidth = btHeight
+            btHeight = tmp
+        }
+
         val p0 = LayoutParams(btWidth, btHeight)
         p0.weight = 0f
-
         val p1 = if (orientation == HORIZONTAL) LayoutParams(
             0,
             ViewGroup.LayoutParams.WRAP_CONTENT
         ) else LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 0)
         p1.weight = 1f
-
         val buttonsBefore = if (orientation == HORIZONTAL) buttonsDown else buttonsUp.asReversed()
         val buttonsAfter = if (orientation == HORIZONTAL) buttonsUp else buttonsDown.asReversed()
-
         buttonsBefore.forEach {
             addView(createButton(it.first, it.second), p0)
         }
@@ -553,6 +583,10 @@ class MaterialNumberPicker @JvmOverloads constructor(
     private fun updateEditTextDisplayValue() {
         val displayValue = state.getDisplayValue()
         editText.setText(displayValue)
+    }
+
+    private fun onStepSizesChanged() {
+        initSubViews(false)
     }
 
     // -----------
