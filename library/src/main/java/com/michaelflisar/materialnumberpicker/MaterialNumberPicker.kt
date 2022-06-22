@@ -302,7 +302,7 @@ class MaterialNumberPicker @JvmOverloads constructor(
             onSuffixChanged()
         }
 
-    fun clearFocus() {
+    fun clearInputFocus() {
         editText.clearFocus()
         requestFocus()
     }
