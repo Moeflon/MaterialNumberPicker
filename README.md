@@ -15,6 +15,8 @@ This view allows the user to select a number (`int` or `float`) from within a pr
 
 Check out the demo app to see it in action and to see how you can set up the view in xml and work with it in kotlin.
 
+Here's a 30s gif, showing some pickers in action:
+
 <img src="https://github.com/MFlisar/MaterialNumberPicker/blob/main/media/demo.gif?raw=true" width="400">
 
 ### Example
