@@ -56,7 +56,7 @@ internal object ViewUtil {
                 if (!text.isNullOrEmpty()) {
                     val newValue = picker.setup.parser(text)
                     if (!picker.value.isEqual(newValue)) {
-                        if (picker.setup.isValueAllowed(newValue)) {
+                        if (picker.setup.isValueAllowed(picker.style, newValue)) {
                             val displayedValue = picker.setup.formatter(newValue!!)
 
                             // we update the value directly, check is already done and we will call listeners manually
@@ -207,7 +207,7 @@ internal object ViewUtil {
             )
         }
 
-        val result = if (!picker.setup.isValueAllowed(newValue)) {
+        val result = if (!picker.setup.isValueAllowed(picker.style, newValue)) {
             picker.onInvalidValueSelected?.invoke(picker, null, newValue, true)
             false
         } else {
@@ -216,7 +216,7 @@ internal object ViewUtil {
                 inputView.updateDisplayedValue(
                     picker,
                     picker.setup,
-                    newValue!!,
+                    newValue,
                     false /* no function for EditText! */
                 )
                 picker.onValueChangedListener?.invoke(picker, newValue, true)

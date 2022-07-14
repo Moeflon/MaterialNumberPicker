@@ -113,7 +113,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
         internal set
 
     fun setValue(value: T, smooth: Boolean = true): Boolean {
-        if (!setup.isValueAllowed(value))
+        if (!setup.isValueAllowed(style, value))
             return false
         if (this.value != value) {
             this.value = value
@@ -135,7 +135,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     //internal lateinit var state: IState<T>
     private var editTextStyleId: Int = 0
     internal var buttonWidth: Int = 0
-    private var style: MaterialNumberPicker.Style = MaterialNumberPicker.Style.Input
+    internal var style: MaterialNumberPicker.Style = MaterialNumberPicker.Style.Input
     internal var iconUp: Int = 0
     internal var iconDown: Int = 0
     internal var iconUpLarge: Int = 0
@@ -170,9 +170,6 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
 
         try {
 
-            _setup = initSetup(array)
-            value = initValue(array, setup)
-
             longPressRepeatClicks = array.getBoolean(styleAttr_longPressRepeatClicks, true)
             buttonWidth = array.getDimension(styleAttr_buttonWidth, 0f).toInt()
 
@@ -191,6 +188,10 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
                 styleAttr_editTextStyle,
                 R.style.MaterialNumberPicker_EditTextStyle
             )
+
+            _setup = initSetup(array)
+            value = initValue(array, setup)
+
             inflateChildren()
             inputView.updateDisplayedValue(this as Picker, setup, value, false)
 

@@ -79,7 +79,7 @@ class FloatPicker @JvmOverloads constructor(
 
     override fun initValue(array: TypedArray, setup: INumberPickerSetup<Float>): Float {
         val value = array.getFloat(R.styleable.MaterialNumberPickerFloat_mnp_valueFloat, 0f)
-        if (!setup.isValueAllowed(value))
+        if (!setup.isValueAllowed(style, value))
             return setup.defaultValue
         return value
     }

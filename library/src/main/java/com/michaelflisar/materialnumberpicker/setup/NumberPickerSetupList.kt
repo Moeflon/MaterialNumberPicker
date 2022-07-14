@@ -19,7 +19,7 @@ class NumberPickerSetupList<T>(
         }
     }
 
-    override fun isValueAllowed(value: T?) = value != null && values.contains(value)
+    override fun isValueAllowed(style: MaterialNumberPicker.Style, value: T?) = value != null && values.contains(value)
 
     override fun calcPrimaryButtonResult(currentValue: T, button: INumberPickerSetup.Button): T? {
         val index = values.indexOf(currentValue)

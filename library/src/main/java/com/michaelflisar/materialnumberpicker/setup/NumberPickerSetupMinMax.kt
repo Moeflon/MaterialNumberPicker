@@ -1,6 +1,5 @@
 package com.michaelflisar.materialnumberpicker.setup
 
-import android.util.Log
 import com.michaelflisar.materialnumberpicker.MaterialNumberPicker
 import com.michaelflisar.materialnumberpicker.internal.minus
 import com.michaelflisar.materialnumberpicker.internal.plus
@@ -20,7 +19,12 @@ class NumberPickerSetupMinMax<T>(
 
     override val type = MaterialNumberPicker.DataType.fromObject(defaultValue)
 
-    override fun isValueAllowed(value: T?) = value != null && value in min..max
+    override fun isValueAllowed(style: MaterialNumberPicker.Style, value: T?): Boolean {
+        return when (style) {
+            MaterialNumberPicker.Style.Input -> value != null && value in min..max
+            MaterialNumberPicker.Style.Scroll -> allValidValuesSorted.contains(value)
+        }
+    }
 
     override fun supportsSecondaryButton() = stepSize != stepSizeSecondary
 

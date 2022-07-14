@@ -72,7 +72,7 @@ class IntPicker @JvmOverloads constructor(
 
     override fun initValue(array: TypedArray, setup: INumberPickerSetup<Int>): Int {
         val value = array.getInteger(R.styleable.MaterialNumberPickerInteger_mnp_valueInt, 0)
-        if (!setup.isValueAllowed(value))
+        if (!setup.isValueAllowed(style, value))
             return setup.defaultValue
         return value
     }

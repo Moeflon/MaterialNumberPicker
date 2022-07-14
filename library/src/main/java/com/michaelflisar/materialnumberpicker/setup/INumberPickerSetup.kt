@@ -23,7 +23,7 @@ interface INumberPickerSetup<T> where T : Number, T : Comparable<T> {
     val parser: (value: String) -> T?
     val scrollerVisibleOffsetItems: Int
 
-    fun isValueAllowed(value: T?): Boolean
+    fun isValueAllowed(style: MaterialNumberPicker.Style, value: T?): Boolean
 
     val longestValue: T
     val allValidValuesSorted: List<T>

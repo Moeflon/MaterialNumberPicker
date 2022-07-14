@@ -208,41 +208,70 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     app:mnp_longPressRepeatClicks="true"
-                    app:mnp_maxFloat="100"
-                    app:mnp_minFloat="0"
+                    app:mnp_maxFloat="100.0"
+                    app:mnp_minFloat="0.0"
                     app:mnp_prefix=""
-                    app:mnp_stepSizeFloat="1"
-                    app:mnp_stepSizeLargeFloat="5"
+                    app:mnp_stepSizeFloat="1.0"
+                    app:mnp_stepSizeLargeFloat="5.0"
                     app:mnp_style="scroll"
                     app:mnp_suffix="ABC"
-                    app:mnp_valueFloat="10" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btDecrease"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Decrease" />
-
-                <Button
-                    android:id="@+id/btIncrease"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Increase" />
+                    app:mnp_valueFloat="10.0" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btDecrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Decrease" />
+
+        <Button
+            android:id="@+id/btIncrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Increase" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="10" />
+
+        <Button
+            android:id="@+id/bt25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="25" />
+
+        <Button
+            android:id="@+id/bt50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="50" />
+
+    </LinearLayout>
 
 </LinearLayout>

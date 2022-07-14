@@ -5,12 +5,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.michaelflisar.materialnumberpicker.AbstractMaterialNumberPicker
 import com.michaelflisar.materialnumberpicker.MaterialNumberPicker
 import com.michaelflisar.materialnumberpicker.demo.databinding.ActivityDemoBinding
 import com.michaelflisar.materialnumberpicker.picker.FloatPicker
 import com.michaelflisar.materialnumberpicker.picker.IntPicker
 import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 import com.michaelflisar.materialnumberpicker.setup.NumberPickerSetupMinMax
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -29,29 +32,33 @@ class DemoActivity : AppCompatActivity() {
         setContentView(view)
         setSupportActionBar(binding.toolbar)
 
+        val pickersFloat = listOf(binding.mnp2, binding.mnp5, binding.mnp12, binding.mnp14)
+        val pickersInt =
+            listOf(binding.mnp1, binding.mnp3, binding.mnp4, binding.mnp11, binding.mnp13)
+
         // Float Pickers
-        listOf(binding.mnp2, binding.mnp5, binding.mnp12, binding.mnp14).forEach {
+        pickersFloat.forEach {
             it.onValueChangedListener =
                 { picker: FloatPicker, value: Float, fromUser: Boolean ->
-                    showToast("New float value: $value (user = $fromUser)")
+                    showToast(picker, "New float value: $value (user = $fromUser)")
                 }
             it.onInvalidValueSelected =
                 { picker: FloatPicker, invalidInput: String?, invalidValue: Float?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast("Invalid float value: $invalidInput | $invalidValue (button = $fromButton)")
+                    showToast(picker, "Invalid float value: $invalidInput | $invalidValue (button = $fromButton)")
                 }
         }
 
         // Int Pickers
-        listOf(binding.mnp1, binding.mnp3, binding.mnp4, binding.mnp11, binding.mnp13).forEach {
+        pickersInt.forEach {
             it.onValueChangedListener =
                 { picker: IntPicker, value: Int, fromUser: Boolean ->
-                    showToast("New int value: $value (user = $fromUser)")
+                    showToast(picker, "New int value: $value (user = $fromUser)")
                 }
             it.onInvalidValueSelected =
                 { picker: IntPicker, invalidInput: String?, invalidValue: Int?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast("Invalid int value: $invalidInput | $invalidValue (button = $fromButton)")
+                    showToast(picker, "Invalid int value: $invalidInput | $invalidValue (button = $fromButton)")
                 }
         }
 
@@ -107,22 +114,61 @@ class DemoActivity : AppCompatActivity() {
             )
         }
 
+        val stepsToTryFloat = listOf(0.5f, 1f, 2.5f, 5f)
+        val stepsToTryInt = stepsToTryFloat.filter { it.toInt().toFloat() - it == 0f }.map { it.toInt() }
+
+        val updatePickers = { factor: Int ->
+            pickersInt.forEach {
+                for (adjustment in stepsToTryInt) {
+                    if (it.setValue(it.value + adjustment * factor)) {
+                        log(it, "Accepted value: ${it.value}")
+                        break
+                    }
+                }
+            }
+            pickersFloat.forEach {
+                for (adjustment in stepsToTryFloat) {
+                    if (it.setValue(it.value + adjustment * factor)) {
+                        log(it, "Accepted value: ${it.value}")
+                        break
+                    }
+                }
+            }
+        }
+        val setPickers = { value: Int ->
+            pickersInt.forEach {
+                it.setValue(value)
+            }
+            pickersFloat.forEach {
+                it.setValue(value.toFloat())
+            }
+        }
+
         binding.btIncrease.setOnClickListener {
-            binding.mnp11.setValue(binding.mnp11.value + 1)
-            binding.mnp12.setValue(binding.mnp12.value + 5)
-            binding.mnp13.setValue(binding.mnp13.value + 1)
-            binding.mnp14.setValue(binding.mnp14.value + 1f)
+            updatePickers(1)
         }
         binding.btDecrease.setOnClickListener {
-            binding.mnp11.setValue(binding.mnp11.value - 1)
-            binding.mnp12.setValue(binding.mnp12.value - 5)
-            binding.mnp13.setValue(binding.mnp13.value - 1)
-            binding.mnp14.setValue(binding.mnp14.value - 1f)
+            updatePickers(-1)
+        }
+        binding.bt10.setOnClickListener {
+            setPickers(10)
+        }
+        binding.bt25.setOnClickListener {
+            setPickers(25)
+        }
+        binding.bt50.setOnClickListener {
+            setPickers(50)
         }
     }
 
-    private fun showToast(info: String) {
-        Log.d("SHOW TOAST", info)
+    private fun log(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
+        val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
+        Log.d("LOG INFO", "[$name] $info")
+    }
+
+    private fun showToast(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
+        val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
+        Log.d("SHOW TOAST", "[$name] $info")
         toast?.cancel()
         toast = Toast.makeText(this, info, Toast.LENGTH_SHORT)
         toast?.show()
@@ -163,7 +209,7 @@ class DemoActivity : AppCompatActivity() {
         ): Float? {
         }*/
 
-        override fun isValueAllowed(value: Float?): Boolean {
+        override fun isValueAllowed(style: MaterialNumberPicker.Style, value: Float?): Boolean {
             if (value == null || value < 0f || value > 1000f)
                 return false
             // 0..10kg => all values are allowed, if the are natural numbers
