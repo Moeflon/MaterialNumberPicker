@@ -41,52 +41,51 @@ Here's a list of existing styles:
 ```xml
 <com.michaelflisar.materialnumberpicker.picker.IntPicker
                                          
-	android:id="@+id/picker"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+android:id="@+id/picker"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
 
-	// required
-	style="@style/MaterialNumberPickerInteger.Horizontal.Outlined" // one of the CORRECT (int in this case) styles mentioned above
+  // required
+  style="@style/MaterialNumberPickerInteger.Horizontal.Outlined" // one of the CORRECT (int in this case) styles mentioned above
 
-	// style
-	 app:mnp_style="input" // decide if you want a input type or scroller type number picker
+  // style
+  app:mnp_style="input" // decide if you want a input type or scroller type number picker
 
-	// values - must end on Int or Float depending on the picker type => use "app:mnp_*Float" for the FloatPicker!!!
-	app:mnp_valueInt="50" // initial value of the picker
-	app:mnp_minInt="0" // min allowed value of the picker
-	app:mnp_maxInt="9999" // max allowed value of the picker
-	app:mnp_stepSizeInt="1" // step size for the up/down button
-	app:mnp_stepSizeLargeInt="5" // step size for the secondary up/down buttons for large steps (will be hidden if value is equal to stepSize!)
+  // values - must end on Int or Float depending on the picker type => use "app:mnp_*Float" for the FloatPicker!!!
+  app:mnp_valueInt="50" // initial value of the picker
+  app:mnp_minInt="0" // min allowed value of the picker
+  app:mnp_maxInt="9999" // max allowed value of the picker
+  app:mnp_stepSizeInt="1" // step size for the up/down button
+  app:mnp_stepSizeLargeInt="5" // step size for the secondary up/down buttons for large steps (will be hidden if value is equal to stepSize!)
 
-	// optional
-	app:mnp_prefix="" // a prefix that will be shown before the number
-	app:mnp_suffix="" // a suffix that will be shown after the number
-	app:mnp_buttonWidth="0dp" // defines the widths of the buttons, 0 for auto width                                                         
-	app:mnp_editTextStyle="@style/MaterialNumberPicker.EditTextStyle" // if desired you can provide your own style for the EditText
-	app:mnp_icon_up="@drawable/..." // provide a custom drawable for the increase button
-	app:mnp_icon_down="@drawable/..." // provide a custom drawable for the decrease button
-	app:mnp_icon_up_large="@drawable/..." // provide a custom drawable for the increase in large steps button
-	app:mnp_icon_down_large="@drawable/..." // provide a custom drawable for the decrease  in large steps button
-	app:mnp_longPressRepeatClicks="true" // enable/disable the repetitive function of the button if it is hold down
+  // optional
+  app:mnp_prefix="" // a prefix that will be shown before the number
+  app:mnp_suffix="" // a suffix that will be shown after the number
+  app:mnp_buttonWidth="0dp" // defines the widths of the buttons, 0 for auto width                                                         
+  app:mnp_editTextStyle="@style/MaterialNumberPicker.EditTextStyle" // if desired you can provide your own style for the EditText
+  app:mnp_icon_up="@drawable/..." // provide a custom drawable for the increase button
+  app:mnp_icon_down="@drawable/..." // provide a custom drawable for the decrease button
+  app:mnp_icon_up_large="@drawable/..." // provide a custom drawable for the increase in large steps button
+  app:mnp_icon_down_large="@drawable/..." // provide a custom drawable for the decrease  in large steps button
+  app:mnp_longPressRepeatClicks="true" // enable/disable the repetitive function of the button if it is hold down
 
-	//  only relevant for the float picker!
-	app:mnp_commas="2" // used for the display formatter
-	
+  //  only relevant for the float picker!
+  app:mnp_commas="2" // used for the display formatter
 />
 ```
 
 ```kotlin
 // Listeners (example for int pickers, for float pickers replace Int with Float!)
 picker.onValueChangedListener = { picker: IntPicker, value: Int, fromUser: Boolean ->
-    // listen to value change events
+  // listen to value change events
 }
 picker.onInvalidValueSelected = { picker: IntPicker, invalidInput: String?, invalidValue: Int?, fromButton: Boolean ->
-    // listen to invalid values events if the user tries to input an invalid number or one that's outside of the min/max range
-	// invalidInput may provide the input (if error comes not from button) the user is trying to use
-    // if fromButton is true, it means the user reached the min/max by pressing the button, if desired, you can react on this here as well
+  // listen to invalid values events if the user tries to input an invalid number or one that's outside of the min/max range
+  // invalidInput may provide the input (if error comes not from button) the user is trying to use
+  // if fromButton is true, it means the user reached the min/max by pressing the button, if desired, you can react on this here as well
 }
 picker.focusChangedListener = { focus: Boolean -> 
-    // the inner EditText got the focus
+  // the inner EditText got the focus
 }
 
 // get values
@@ -101,14 +100,14 @@ val currentStepSizeLarge = currentMinMaxSetup.stepSizeSecondary
 
 // setter/updater
 picker.setup = NumberPickerSetupMinMax(
-	100,
-	100,
-	1000,
-	10,
-	50, // select same value as stepSize to disable secondary buttons
-	{ "N=" + it.toString() + "s" }, // custom formatter, in this case it adds prefix and suffix
-	{ it.toIntOrNull() },
-	2
+  100,
+  100,
+  1000,
+  10,
+  50, // select same value as stepSize to disable secondary buttons
+  { "N=" + it.toString() + "s" }, // custom formatter, in this case it adds prefix and suffix
+  { it.toIntOrNull() },
+  2
 )
 
 picker.longPressRepeatClicks = true // enabled by default, if disabled, long pressing a button won't repeat its action
