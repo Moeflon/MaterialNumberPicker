@@ -41,9 +41,9 @@ Here's a list of existing styles:
 ```xml
 <com.michaelflisar.materialnumberpicker.picker.IntPicker
                                          
-android:id="@+id/picker"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
+  android:id="@+id/picker"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
 
   // required
   style="@style/MaterialNumberPickerInteger.Horizontal.Outlined" // one of the CORRECT (int in this case) styles mentioned above
@@ -71,6 +71,7 @@ android:layout_height="wrap_content"
 
   //  only relevant for the float picker!
   app:mnp_commas="2" // used for the display formatter
+  
 />
 ```
 
