@@ -38,6 +38,8 @@ Here's a list of existing styles:
 	* `style="@style/MaterialNumberPickerFloat.Vertical.Outlined"`
 	* `style="@style/MaterialNumberPickerFloat.Vertical.None"`
 	
+#### XML
+	
 ```xml
 <com.michaelflisar.materialnumberpicker.picker.IntPicker
                                          
@@ -74,6 +76,8 @@ Here's a list of existing styles:
   
 />
 ```
+
+#### Code
 
 ```kotlin
 // Listeners (example for int pickers, for float pickers replace Int with Float!)
