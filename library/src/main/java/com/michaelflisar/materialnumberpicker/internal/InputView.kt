@@ -94,6 +94,31 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
             nextLayoutAction = {
                 val index = adapter.getItemIndex(value)
                 scrollListener?.let { recyclerView.removeOnScrollListener(it) }
+                val check = {
+                    val vh = recyclerView.findViewHolderForLayoutPosition(index)
+                    if (vh != null) {
+                        val offset =
+                            helper.calculateDistanceToFinalSnap(layoutManager, vh.itemView)!!
+                        if (offset[0] != 0 || offset[1] != 0) {
+                            if (smooth) {
+                                recyclerView.smoothScrollBy(offset[0], offset[1])
+                            } else {
+                                recyclerView.scrollBy(offset[0], offset[1])
+                            }
+                        }
+                        //Log.d(
+                        //    "Scroller",
+                        //    "scroll to pos [$pickerId] = $index (value = $value) | vh = $vh | offset = ${offset[0]}, ${offset[1]}"
+                        //)
+                        scrollListener?.let { recyclerView.removeOnScrollListener(it) }
+                        scrollListener = null
+                    } else {
+                        //Log.d(
+                        //  "Scroller",
+                        //  "scroll to pos [$pickerId] = $index (value = $value) | vh = $vh"
+                        ///
+                    }
+                }
                 scrollListener = object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                         super.onScrollStateChanged(recyclerView, newState)
@@ -106,39 +131,20 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
                         super.onScrolled(recyclerView, dx, dy)
                         check()
                     }
-
-                    fun check() {
-                        val vh = recyclerView.findViewHolderForLayoutPosition(index)
-                        if (vh != null) {
-                            val offset =
-                                helper.calculateDistanceToFinalSnap(layoutManager, vh.itemView)!!
-                            if (offset[0] != 0 || offset[1] != 0) {
-                                if (smooth) {
-                                    recyclerView.smoothScrollBy(offset[0], offset[1])
-                                } else {
-                                    recyclerView.scrollBy(offset[0], offset[1])
-                                }
-                            }
-                            //Log.d(
-                            //    "Scroller",
-                            //    "scroll to pos [$pickerId] = $index (value = $value) | vh = $vh | offset = ${offset[0]}, ${offset[1]}"
-                            //)
-                            scrollListener?.let { recyclerView.removeOnScrollListener(it) }
-                            scrollListener = null
-                        } else {
-                            //Log.d(
-                            //  "Scroller",
-                            //  "scroll to pos [$pickerId] = $index (value = $value) | vh = $vh"
-                            ///
-                        }
-                    }
                 }
+
                 recyclerView.scrollToPosition(index)
-                recyclerView.addOnScrollListener(scrollListener!!)
+                check()
+                scrollListener?.let { recyclerView.addOnScrollListener(it) }
             }
-            recyclerView.doOnNextLayout {
+            if (recyclerView.isLaidOut) {
                 nextLayoutAction?.invoke()
                 nextLayoutAction = null
+            } else {
+                recyclerView.doOnNextLayout {
+                    nextLayoutAction?.invoke()
+                    nextLayoutAction = null
+                }
             }
         }
 

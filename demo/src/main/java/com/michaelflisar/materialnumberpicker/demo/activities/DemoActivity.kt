@@ -108,6 +108,13 @@ class DemoActivity : AppCompatActivity() {
                 false /* we want to immediately set the new value and avoid the initial scrolling animation here */
             )
         }
+
+        binding.btIncrease.setOnClickListener {
+            binding.mnp11.setValue(binding.mnp11.value + 1)
+            binding.mnp12.setValue(binding.mnp12.value + 5)
+            binding.mnp13.setValue(binding.mnp13.value + 1)
+            binding.mnp14.setValue(binding.mnp14.value + 1f)
+        }
     }
 
     private fun showToast(info: String) {

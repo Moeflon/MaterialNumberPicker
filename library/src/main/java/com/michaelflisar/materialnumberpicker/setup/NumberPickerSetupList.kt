@@ -8,7 +8,7 @@ class NumberPickerSetupList<T>(
     val values: List<T>,
     override val formatter: (value: T) -> String,
     override val parser: (value: String) -> T?,
-    override val scrollerVisibleOffsetItems: Int
+    override val scrollerVisibleOffsetItems: Int = MaterialNumberPicker.DEFAULT_OFFSET_ITEMS
 ) : INumberPickerSetup<T>,
     INumberPickerSetup.ButtonProvider<T> where T : Number, T : Comparable<T> {
 
