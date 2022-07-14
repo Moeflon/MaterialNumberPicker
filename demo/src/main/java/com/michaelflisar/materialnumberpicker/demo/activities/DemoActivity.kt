@@ -12,7 +12,6 @@ import com.michaelflisar.materialnumberpicker.picker.FloatPicker
 import com.michaelflisar.materialnumberpicker.picker.IntPicker
 import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 import com.michaelflisar.materialnumberpicker.setup.NumberPickerSetupMinMax
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -32,7 +31,7 @@ class DemoActivity : AppCompatActivity() {
         setContentView(view)
         setSupportActionBar(binding.toolbar)
 
-        val pickersFloat = listOf(binding.mnp2, binding.mnp5, binding.mnp12, binding.mnp14)
+        val pickersFloat = listOf(binding.mnp2, binding.mnp5, binding.mnp6, binding.mnp12, binding.mnp14)
         val pickersInt =
             listOf(binding.mnp1, binding.mnp3, binding.mnp4, binding.mnp11, binding.mnp13)
 
@@ -115,13 +114,13 @@ class DemoActivity : AppCompatActivity() {
         }
 
         val stepsToTryFloat = listOf(0.5f, 1f, 2.5f, 5f)
-        val stepsToTryInt = stepsToTryFloat.filter { it.toInt().toFloat() - it == 0f }.map { it.toInt() }
+        val stepsToTryInt = stepsToTryFloat.filter { ceil(it) == floor(it) }.map { it.toInt() }
 
         val updatePickers = { factor: Int ->
             pickersInt.forEach {
                 for (adjustment in stepsToTryInt) {
                     if (it.setValue(it.value + adjustment * factor)) {
-                        log(it, "Accepted value: ${it.value}")
+                        logInfo(it, "Accepted value: ${it.value}")
                         break
                     }
                 }
@@ -129,7 +128,7 @@ class DemoActivity : AppCompatActivity() {
             pickersFloat.forEach {
                 for (adjustment in stepsToTryFloat) {
                     if (it.setValue(it.value + adjustment * factor)) {
-                        log(it, "Accepted value: ${it.value}")
+                        logInfo(it, "Accepted value: ${it.value}")
                         break
                     }
                 }
@@ -161,16 +160,17 @@ class DemoActivity : AppCompatActivity() {
         }
     }
 
-    private fun log(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
+    private fun logInfo(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
         val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
         Log.d("LOG INFO", "[$name] $info")
     }
 
     private fun showToast(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
         val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
-        Log.d("SHOW TOAST", "[$name] $info")
+        val fullInfo = "[$name] $info"
+        Log.d("SHOW TOAST", fullInfo)
         toast?.cancel()
-        toast = Toast.makeText(this, info, Toast.LENGTH_SHORT)
+        toast = Toast.makeText(this, fullInfo, Toast.LENGTH_SHORT)
         toast?.show()
     }
 

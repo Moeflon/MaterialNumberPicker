@@ -112,6 +112,9 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     lateinit var value: T
         internal set
 
+    /*
+     * returns true, if value was set (either by changing it or because it is already set), false otherwise
+     */
     fun setValue(value: T, smooth: Boolean = true): Boolean {
         if (!setup.isValueAllowed(style, value))
             return false
@@ -120,7 +123,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
             onValueChanged(true, smooth, true)
             return true
         }
-        return false
+        return true
     }
 
     fun clearInputFocus() {

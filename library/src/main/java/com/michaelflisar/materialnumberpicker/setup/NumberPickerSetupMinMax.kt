@@ -20,8 +20,8 @@ class NumberPickerSetupMinMax<T>(
     override val type = MaterialNumberPicker.DataType.fromObject(defaultValue)
 
     override fun isValueAllowed(style: MaterialNumberPicker.Style, value: T?): Boolean {
-        return when (style) {
-            MaterialNumberPicker.Style.Input -> value != null && value in min..max
+        return value != null && when (style) {
+            MaterialNumberPicker.Style.Input -> value in min..max
             MaterialNumberPicker.Style.Scroll -> allValidValuesSorted.contains(value)
         }
     }

@@ -139,6 +139,24 @@
                 app:mnp_suffix="ABC"
                 app:mnp_valueFloat="50.0" />
 
+            <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                android:id="@+id/mnp6"
+                style="@style/MaterialNumberPickerFloat.Horizontal.Filled"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="48dp"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxFloat="100.0"
+                app:mnp_minFloat="0.0"
+                app:mnp_prefix="ABC"
+                app:mnp_stepSizeFloat="1.0"
+                app:mnp_stepSizeLargeFloat="2.5"
+                app:mnp_style="scroll"
+                app:mnp_suffix=""
+                app:mnp_valueFloat="50.0" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,7 +223,7 @@
                     android:id="@+id/mnp14"
                     style="@style/MaterialNumberPickerFloat.Vertical.Filled"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="160dp"
                     android:layout_margin="4dp"
                     app:mnp_longPressRepeatClicks="true"
                     app:mnp_maxFloat="100.0"
@@ -223,55 +241,72 @@
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+        app:cardBackgroundColor="?colorPrimaryDark"
+        app:cardElevation="16dp"
+        app:cardCornerRadius="0dp">
 
-        <Button
-            android:id="@+id/btDecrease"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="Decrease" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btIncrease"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="Increase" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/btDecrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Decrease" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btIncrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Increase" />
 
-        <Button
-            android:id="@+id/bt10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="10" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/bt25"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="25" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/bt50"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:text="50" />
+                <Button
+                    android:id="@+id/bt10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="10" />
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/bt25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="25" />
+
+                <Button
+                    android:id="@+id/bt50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="50" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
