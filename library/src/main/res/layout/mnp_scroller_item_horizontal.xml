@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="?selectableItemBackground"
+    android:minHeight="@dimen/mnp_scroller_item_size"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:ellipsize="none"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        tools:text="0123456789" />
+
+</FrameLayout>

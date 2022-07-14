@@ -1,35 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="MaterialNumberPicker">
 
-        <attr name="mnp_value" format="float" />
-        <attr name="mnp_stepSize" format="float" />
-        <attr name="mnp_stepSizeLarge" format="float" />
-        <attr name="mnp_min" format="float" />
-        <attr name="mnp_max" format="float" />
+    <attr name="mnp_prefix" format="string|reference" />
+    <attr name="mnp_suffix" format="string|reference" />
 
-        <attr name="mnp_prefix" format="string|reference" />
-        <attr name="mnp_suffix" format="string|reference" />
+    <attr name="mnp_editTextStyle" format="reference" />
+    <attr name="mnp_buttonWidth" format="dimension" />
+    <attr name="mnp_iconUp" format="reference" />
+    <attr name="mnp_iconDown" format="reference" />
+    <attr name="mnp_iconUpLarge" format="reference" />
+    <attr name="mnp_iconDownLarge" format="reference" />
+    <attr name="mnp_longPressRepeatClicks" format="boolean" />
+    <attr name="mnp_scrollerVisibleOffsetItems" format="integer" />
 
-        <attr name="mnp_editTextStyle" format="reference" />
-        <attr name="mnp_buttonWidth" format="dimension" />
-        <attr name="mnp_icon_up" format="reference" />
-        <attr name="mnp_icon_down" format="reference" />
-        <attr name="mnp_icon_up_large" format="reference" />
-        <attr name="mnp_icon_down_large" format="reference" />
-        <attr name="mnp_longPressRepeatClicks" format="boolean" />
+    <attr name="mnp_style" format="enum">
+        <enum name="input" value="0" />
+        <enum name="scroll" value="1" />
+    </attr>
 
-        <attr name="mnp_dataType" format="enum">
-            <enum name="type_integer" value="0" />
-            <enum name="type_float" value="1" />
-        </attr>
+    <declare-styleable name="MaterialNumberPickerInteger">
 
-        <attr name="mnp_orientation" format="enum">
-            <enum name="horizontal" value="0" />
-            <enum name="vertical" value="1" />
-        </attr>
+        <attr name="mnp_valueInt" format="integer" />
+        <attr name="mnp_stepSizeInt" format="integer" />
+        <attr name="mnp_stepSizeLargeInt" format="integer" />
+        <attr name="mnp_minInt" format="integer" />
+        <attr name="mnp_maxInt" format="integer" />
+
+        <attr name="mnp_prefix" />
+        <attr name="mnp_suffix" />
+        <attr name="mnp_editTextStyle" />
+        <attr name="mnp_buttonWidth" />
+        <attr name="mnp_iconUp" />
+        <attr name="mnp_iconDown" />
+        <attr name="mnp_iconUpLarge" />
+        <attr name="mnp_iconDownLarge" />
+        <attr name="mnp_longPressRepeatClicks" />
+        <attr name="mnp_style" />
+        <attr name="mnp_scrollerVisibleOffsetItems" />
 
         <attr name="android:background" />
+        <attr name="android:orientation" />
+
+    </declare-styleable>
+
+    <declare-styleable name="MaterialNumberPickerFloat">
+
+        <attr name="mnp_valueFloat" format="float" />
+        <attr name="mnp_stepSizeFloat" format="float" />
+        <attr name="mnp_stepSizeLargeFloat" format="float" />
+        <attr name="mnp_minFloat" format="float" />
+        <attr name="mnp_maxFloat" format="float" />
+
+        <attr name="mnp_prefix" />
+        <attr name="mnp_suffix" />
+        <attr name="mnp_editTextStyle" />
+        <attr name="mnp_buttonWidth" />
+        <attr name="mnp_iconUp" />
+        <attr name="mnp_iconDown" />
+        <attr name="mnp_iconUpLarge" />
+        <attr name="mnp_iconDownLarge" />
+        <attr name="mnp_longPressRepeatClicks" />
+        <attr name="mnp_style" />
+        <attr name="mnp_scrollerVisibleOffsetItems" />
+
+        <attr name="mnp_commas" format="integer" />
+
+        <attr name="android:background" />
+        <attr name="android:orientation" />
 
     </declare-styleable>
 

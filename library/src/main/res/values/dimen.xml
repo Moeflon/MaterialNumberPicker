@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="mnp_min_view_size">48dp</dimen>
+    <dimen name="mnp_scroller_item_size">48dp</dimen>
 </resources>

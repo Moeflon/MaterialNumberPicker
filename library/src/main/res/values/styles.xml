@@ -5,63 +5,132 @@
     <!-- basic styles -->
     <!-- ************ -->
 
-    <style name="MaterialNumberPicker">
-        <item name="mnp_value">0</item>
-        <item name="mnp_min">0</item>
-        <item name="mnp_max">100</item>
-        <item name="mnp_stepSize">1</item>
-        <item name="mnp_stepSizeLarge">1</item>
+    <style name="MaterialNumberPickerInteger">
+        <item name="mnp_valueInt">0</item>
+        <item name="mnp_minInt">0</item>
+        <item name="mnp_maxInt">100</item>
+        <item name="mnp_stepSizeInt">1</item>
+        <item name="mnp_stepSizeLargeInt">1</item>
         <item name="mnp_longPressRepeatClicks">true</item>
         <item name="mnp_buttonWidth">0dp</item>
-        <item name="mnp_dataType">type_integer</item>
+        <item name="mnp_scrollerVisibleOffsetItems">2</item>
         <item name="mnp_editTextStyle">@style/MaterialNumberPicker.EditTextStyle</item>
+    </style>
+
+    <style name="MaterialNumberPickerFloat">
+        <item name="mnp_valueFloat">0.0</item>
+        <item name="mnp_minFloat">0.0</item>
+        <item name="mnp_maxFloat">10.0</item>
+        <item name="mnp_stepSizeFloat">0.1</item>
+        <item name="mnp_stepSizeLargeFloat">0.1</item>
+        <item name="mnp_longPressRepeatClicks">true</item>
+        <item name="mnp_buttonWidth">0dp</item>
+        <item name="mnp_scrollerVisibleOffsetItems">2</item>
+        <item name="mnp_commas">-1</item>
+        <item name="mnp_editTextStyle">@style/MaterialNumberPicker.EditTextStyle</item>
+    </style>
+
+    <style name="MaterialNumberPickerInteger.Horizontal">
+        <item name="mnp_iconDown">@drawable/ic_baseline_keyboard_arrow_left_24</item>
+        <item name="mnp_iconUp">@drawable/ic_baseline_keyboard_arrow_right_24</item>
+        <item name="mnp_iconDownLarge">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
+        <item name="mnp_iconUpLarge">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:minHeight">@dimen/mnp_min_view_size</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
     </style>
 
-    <style name="MaterialNumberPicker.Horizontal">
-        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_left_24</item>
-        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_right_24</item>
-        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
-        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
-        <item name="mnp_orientation">horizontal</item>
+    <style name="MaterialNumberPickerFloat.Horizontal">
+        <item name="mnp_iconDown">@drawable/ic_baseline_keyboard_arrow_left_24</item>
+        <item name="mnp_iconUp">@drawable/ic_baseline_keyboard_arrow_right_24</item>
+        <item name="mnp_iconDownLarge">@drawable/ic_baseline_keyboard_double_arrow_left_24</item>
+        <item name="mnp_iconUpLarge">@drawable/ic_baseline_keyboard_double_arrow_right_24</item>
+        <item name="android:orientation">horizontal</item>
         <item name="android:minHeight">@dimen/mnp_min_view_size</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
     </style>
 
-    <style name="MaterialNumberPicker.Vertical">
-        <item name="mnp_icon_down">@drawable/ic_baseline_keyboard_arrow_down_24</item>
-        <item name="mnp_icon_up">@drawable/ic_baseline_keyboard_arrow_up_24</item>
-        <item name="mnp_icon_down_large">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
-        <item name="mnp_icon_up_large">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
-        <item name="mnp_orientation">vertical</item>
+    <style name="MaterialNumberPickerInteger.Vertical">
+        <item name="mnp_iconDown">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_iconUp">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_iconDownLarge">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_iconUpLarge">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:orientation">vertical</item>
         <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="MaterialNumberPickerFloat.Vertical">
+        <item name="mnp_iconDown">@drawable/ic_baseline_keyboard_arrow_down_24</item>
+        <item name="mnp_iconUp">@drawable/ic_baseline_keyboard_arrow_up_24</item>
+        <item name="mnp_iconDownLarge">@drawable/ic_baseline_keyboard_double_arrow_down_24</item>
+        <item name="mnp_iconUpLarge">@drawable/ic_baseline_keyboard_double_arrow_up_24</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:minWidth">@dimen/mnp_min_view_size</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 
     <!-- ****** -->
     <!-- styles -->
     <!-- ****** -->
 
-    <style name="MaterialNumberPicker.Horizontal.Filled">
+    <style name="MaterialNumberPickerInteger.Horizontal.Filled">
         <item name="android:background">@drawable/mtrl_background_filled</item>
     </style>
 
-    <style name="MaterialNumberPicker.Vertical.Filled">
+    <style name="MaterialNumberPickerFloat.Horizontal.Filled">
         <item name="android:background">@drawable/mtrl_background_filled</item>
     </style>
 
-    <style name="MaterialNumberPicker.Horizontal.Outlined">
+    <style name="MaterialNumberPickerInteger.Vertical.Filled">
+        <item name="android:background">@drawable/mtrl_background_filled</item>
+    </style>
+
+    <style name="MaterialNumberPickerFloat.Vertical.Filled">
+        <item name="android:background">@drawable/mtrl_background_filled</item>
+    </style>
+
+    <style name="MaterialNumberPickerInteger.Horizontal.Outlined">
         <item name="android:background">@drawable/mtrl_background_outlined</item>
     </style>
 
-    <style name="MaterialNumberPicker.Vertical.Outlined">
+    <style name="MaterialNumberPickerFloat.Horizontal.Outlined">
         <item name="android:background">@drawable/mtrl_background_outlined</item>
     </style>
 
-    <style name="MaterialNumberPicker.Horizontal.None">
+    <style name="MaterialNumberPickerInteger.Vertical.Outlined">
+        <item name="android:background">@drawable/mtrl_background_outlined</item>
+    </style>
+
+    <style name="MaterialNumberPickerFloat.Vertical.Outlined">
+        <item name="android:background">@drawable/mtrl_background_outlined</item>
+    </style>
+
+    <style name="MaterialNumberPickerInteger.Horizontal.None">
         <item name="android:background">@null</item>
     </style>
 
-    <style name="MaterialNumberPicker.Vertical.None">
+    <style name="MaterialNumberPickerFloat.Horizontal.None">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="MaterialNumberPickerInteger.Vertical.None">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="MaterialNumberPickerFloat.Vertical.None">
         <item name="android:background">@null</item>
     </style>
 
