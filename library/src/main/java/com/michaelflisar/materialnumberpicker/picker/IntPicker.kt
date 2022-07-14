@@ -59,7 +59,6 @@ class IntPicker @JvmOverloads constructor(
         }
 
         return NumberPickerSetupMinMax(
-            MaterialNumberPicker.DataType.Int,
             if (0 in min..max) 0 else min,
             min,
             max,

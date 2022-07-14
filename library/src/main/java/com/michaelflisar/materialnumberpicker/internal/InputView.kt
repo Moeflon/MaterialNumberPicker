@@ -94,6 +94,7 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
             nextLayoutAction = {
                 val index = adapter.getItemIndex(value)
                 scrollListener?.let { recyclerView.removeOnScrollListener(it) }
+                recyclerView.stopScroll()
                 val check = {
                     val vh = recyclerView.findViewHolderForLayoutPosition(index)
                     if (vh != null) {

@@ -66,7 +66,6 @@ class FloatPicker @JvmOverloads constructor(
         }
 
         return NumberPickerSetupMinMax(
-            MaterialNumberPicker.DataType.Float,
             if (0f in min..max) 0f else min,
             min,
             max,

@@ -101,7 +101,6 @@ val currentStepSizeLarge = currentMinMaxSetup.stepSizeSecondary
 
 // setter/updater
 picker.setup = NumberPickerSetupMinMax(
-	MaterialNumberPicker.DataType.Int, // make sure this fits the Type!! currently this must be ensured manually
 	100,
 	100,
 	1000,

@@ -68,7 +68,6 @@ class DemoActivity : AppCompatActivity() {
         // updating values
         // mnp4 is of type integer => you can provide any Number but they will be converted to whatever the picker supports!
         binding.mnp4.setup = NumberPickerSetupMinMax(
-            MaterialNumberPicker.DataType.Int, // make sure this fits the Type!! currently this must be ensured manually
             100,
             100,
             1000,
@@ -85,7 +84,6 @@ class DemoActivity : AppCompatActivity() {
 
         // example custom setup
         binding.mnp11.setup = NumberPickerSetupMinMax(
-            MaterialNumberPicker.DataType.Int,
             5,
             0,
             100,
@@ -114,6 +112,12 @@ class DemoActivity : AppCompatActivity() {
             binding.mnp12.setValue(binding.mnp12.value + 5)
             binding.mnp13.setValue(binding.mnp13.value + 1)
             binding.mnp14.setValue(binding.mnp14.value + 1f)
+        }
+        binding.btDecrease.setOnClickListener {
+            binding.mnp11.setValue(binding.mnp11.value - 1)
+            binding.mnp12.setValue(binding.mnp12.value - 5)
+            binding.mnp13.setValue(binding.mnp13.value - 1)
+            binding.mnp14.setValue(binding.mnp14.value - 1f)
         }
     }
 

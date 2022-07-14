@@ -3,7 +3,6 @@ package com.michaelflisar.materialnumberpicker.setup
 import com.michaelflisar.materialnumberpicker.MaterialNumberPicker
 
 class NumberPickerSetupList<T>(
-    override val type: MaterialNumberPicker.DataType,
     override val defaultValue: T,
     val values: List<T>,
     override val formatter: (value: T) -> String,
@@ -11,6 +10,8 @@ class NumberPickerSetupList<T>(
     override val scrollerVisibleOffsetItems: Int = MaterialNumberPicker.DEFAULT_OFFSET_ITEMS
 ) : INumberPickerSetup<T>,
     INumberPickerSetup.ButtonProvider<T> where T : Number, T : Comparable<T> {
+
+    override val type = MaterialNumberPicker.DataType.fromObject(defaultValue)
 
     init {
         if (values.isEmpty() || !values.contains(defaultValue)) {

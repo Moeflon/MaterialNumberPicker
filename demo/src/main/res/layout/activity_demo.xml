@@ -219,12 +219,27 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btIncrease"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:text="Increase" />
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btDecrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Decrease" />
+
+                <Button
+                    android:id="@+id/btIncrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Increase" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

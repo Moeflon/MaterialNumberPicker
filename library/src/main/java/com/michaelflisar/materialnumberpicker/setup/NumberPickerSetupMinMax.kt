@@ -6,7 +6,6 @@ import com.michaelflisar.materialnumberpicker.internal.minus
 import com.michaelflisar.materialnumberpicker.internal.plus
 
 class NumberPickerSetupMinMax<T>(
-    override val type: MaterialNumberPicker.DataType,
     override val defaultValue: T,
     val min: T,
     val max: T,
@@ -18,6 +17,8 @@ class NumberPickerSetupMinMax<T>(
 ) : INumberPickerSetup<T>,
     INumberPickerSetup.ButtonProvider<T>,
     INumberPickerSetup.SecondaryButtonProvider<T> where T : Number, T : Comparable<T> {
+
+    override val type = MaterialNumberPicker.DataType.fromObject(defaultValue)
 
     override fun isValueAllowed(value: T?) = value != null && value in min..max
 

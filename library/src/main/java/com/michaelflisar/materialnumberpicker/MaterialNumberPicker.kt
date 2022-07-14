@@ -10,6 +10,18 @@ object MaterialNumberPicker {
     enum class DataType(val inputType: kotlin.Int) {
         /* 0 */ Int(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED),
         /* 1 */ Float(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL)
+
+        ;
+
+        companion object {
+            fun fromObject(obj: Any): DataType {
+                return when (obj) {
+                    is kotlin.Int -> Int
+                    is kotlin.Float -> Float
+                    else -> throw RuntimeException("Type not handled!")
+                }
+            }
+        }
     }
 
     // ordinal must match the array resource array values!
