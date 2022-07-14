@@ -21,27 +21,41 @@ Check out the demo app to see it in action and to see how you can set up the vie
 
 Here's a list of existing styles:
 
-* `style="@style/MaterialNumberPicker.Horizontal.Filled"`
-* `style="@style/MaterialNumberPicker.Horizontal.Outlined"`
-* `style="@style/MaterialNumberPicker.Horizontal.None"`
-* `style="@style/MaterialNumberPicker.Vertical.Filled"`
-* `style="@style/MaterialNumberPicker.Vertical.Outlined"`
-* `style="@style/MaterialNumberPicker.Vertical.None"`
-
+* Integer Types
+	* `style="@style/MaterialNumberPickerInteger.Horizontal.Filled"`
+	* `style="@style/MaterialNumberPickerInteger.Horizontal.Outlined"`
+	* `style="@style/MaterialNumberPickerInteger.Horizontal.None"`
+	* `style="@style/MaterialNumberPickerInteger.Vertical.Filled"`
+	* `style="@style/MaterialNumberPickerInteger.Vertical.Outlined"`
+	* `style="@style/MaterialNumberPickerInteger.Vertical.None"`
+* Float Types
+	* `style="@style/MaterialNumberPickerFloat.Horizontal.Filled"`
+	* `style="@style/MaterialNumberPickerFloat.Horizontal.Outlined"`
+	* `style="@style/MaterialNumberPickerFloat.Horizontal.None"`
+	* `style="@style/MaterialNumberPickerFloat.Vertical.Filled"`
+	* `style="@style/MaterialNumberPickerFloat.Vertical.Outlined"`
+	* `style="@style/MaterialNumberPickerFloat.Vertical.None"`
+	
 ```xml
-<com.michaelflisar.materialnumberpicker.MaterialNumberPicker                                          
+<com.michaelflisar.materialnumberpicker.picker.IntPicker
+                                         
     android:id="@+id/picker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+	
     // required
-    style="@style/MaterialNumberPicker.Horizontal.Outlined" // one of the 6 above mentioned styles
-    // have defaults but you surely wan't to define those
-    app:mnp_dataType="type_float" // data type of the picker (int or float)    
-    app:mnp_value="50" // initial value of the picker
-    app:mnp_min="0" // min allowed value of the picker
-    app:mnp_max="9999" // max allowed value of the picker
-    app:mnp_stepSize="1" // step size for the up/down button
-    app:mnp_stepSizeLarge="5" // step size for the secondary up/down buttons for large steps (will be hidden if value is equal to stepSize!)
+    style="@style/MaterialNumberPickerInteger.Horizontal.Outlined" // one of the CORRECT (int in this case) styles mentioned above
+	
+	// style
+	 app:mnp_style="input" // decide if you want a input type or scroller type number picker
+	
+	// values - must end on Int or Float depending on the picker type => use "app:mnp_*Float" for the FloatPicker!!!
+	app:mnp_valueInt="50" // initial value of the picker
+    app:mnp_minInt="0" // min allowed value of the picker
+    app:mnp_maxInt="9999" // max allowed value of the picker
+    app:mnp_stepSizeInt="1" // step size for the up/down button
+    app:mnp_stepSizeLargeInt="5" // step size for the secondary up/down buttons for large steps (will be hidden if value is equal to stepSize!)
+	
     // optional
     app:mnp_prefix="" // a prefix that will be shown before the number
     app:mnp_suffix="" // a suffix that will be shown after the number
@@ -52,16 +66,21 @@ Here's a list of existing styles:
     app:mnp_icon_up_large="@drawable/..." // provide a custom drawable for the increase in large steps button
     app:mnp_icon_down_large="@drawable/..." // provide a custom drawable for the decrease  in large steps button
     app:mnp_longPressRepeatClicks="true" // enable/disable the repetitive function of the button if it is hold down
+	
+	//  only relevant for the float picker!
+	app:mnp_commas="2" // used for the display formatter
+	
     />
 ```
 
 ```kotlin
-// Listeners
-picker.onValueChangedListener = { picker: MaterialNumberPicker, value: Number, fromUser: Boolean ->
+// Listeners (example for int pickers, for float pickers replace Int with Float!)
+picker.onValueChangedListener = { picker: IntPicker, value: Int, fromUser: Boolean ->
     // listen to value change events
 }
-picker.onInvalidValueSelected = { invalidValue: Number, fromButton: Boolean ->
+picker.onInvalidValueSelected = { picker: IntPicker, invalidInput: String?, invalidValue: Int?, fromButton: Boolean ->
     // listen to invalid values events if the user tries to input an invalid number or one that's outside of the min/max range
+	// invalidInput may provide the input (if error comes not from button) the user is trying to use
     // if fromButton is true, it means the user reached the min/max by pressing the button, if desired, you can react on this here as well
 }
 picker.focusChangedListener = { focus: Boolean -> 
