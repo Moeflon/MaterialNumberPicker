@@ -88,20 +88,27 @@ picker.focusChangedListener = { focus: Boolean ->
 }
 
 // get values
-val value = picker.value
-val min = picker.min
-val max = picker.max
-val stepSize = picker.stepSize
-val stepSizeLarge = picker.stepSizeLarge
-val dataType = picker.type // returns DataType.Int or DataType.Float
-val prefix = picker.prefix
-val suffix = picker.suffix
+val currentValue = picker.value
+val currentSetup = picker.setup
+// by default (from XML) the setup is always a min/max setup => if you change the setup programmatically, be more cautios here than me!
+val currentMinMaxSetup = currentSetup as NumberPickerSetupMinMax<Int>
+val currentMin = currentMinMaxSetup.min
+val currentMax = currentMinMaxSetup.max
+val currentStepSize = currentMinMaxSetup.stepSize
+val currentStepSizeLarge = currentMinMaxSetup.stepSizeSecondary
 
 // setter/updater
-val success = picker.setValue(value /* Number */) // returns true, if setting succeeded (min/max will be checked in this case)
-picker.setMinMax(min /* Number */, max /* Number */, value /* Number */) // here you should make sure that min/max and value are valid
-picker.setSingleStepSize(stepSize /* Number */) // sets the buttons to use this step size, the large step button will be disabled and removed 
-picker.setStepSizes(stepSize /* Number */, stepSizeLarge /* Number */)// sets the buttons to use those step sizes (if both values are the same, the large step button will be disabled and removed)
+picker.setup = NumberPickerSetupMinMax(
+	MaterialNumberPicker.DataType.Int, // make sure this fits the Type!! currently this must be ensured manually
+	100,
+	100,
+	1000,
+	10,
+	50, // select same value as stepSize to disable secondary buttons
+	{ "N=" + it.toString() + "s" }, // custom formatter, in this case it adds prefix and suffix
+	{ it.toIntOrNull() },
+	2
+)
 
 picker.longPressRepeatClicks = true // enabled by default, if disabled, long pressing a button won't repeat its action
 picker.repeatClicksFirstDelay = 300 // initial delay after which long presses will trigger the click event 
