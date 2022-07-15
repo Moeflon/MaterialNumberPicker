@@ -215,6 +215,12 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
         }
     }
 
+    override fun setNestedScrollingEnabled(enabled: Boolean) {
+        //super.setNestedScrollingEnabled(enabled)
+        (inputView as? InputView.Scroller<T, Picker>)?.recyclerView?.isNestedScrollingEnabled =
+            enabled
+    }
+
     // -----------
     // Events
     // -----------
