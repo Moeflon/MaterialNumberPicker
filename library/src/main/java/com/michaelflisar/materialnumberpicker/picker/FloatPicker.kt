@@ -51,7 +51,7 @@ class FloatPicker @JvmOverloads constructor(
         val prefix = array.getString(R.styleable.MaterialNumberPickerFloat_mnp_prefix) ?: ""
         val suffix = array.getString(R.styleable.MaterialNumberPickerFloat_mnp_suffix) ?: ""
         val commas = array.getInt(R.styleable.MaterialNumberPickerFloat_mnp_commas, -1)
-        val scrollerVisibleOffsetItems = array.getInt(R.styleable.MaterialNumberPickerFloat_mnp_scrollerVisibleOffsetItems, 0)
+        val scrollerVisibleOffsetItems = array.getInt(R.styleable.MaterialNumberPickerFloat_mnp_scrollerVisibleOffsetItems, MaterialNumberPicker.DEFAULT_OFFSET_ITEMS)
 
         val formatter = { value: Float ->
             val valueAsString = commas.takeIf { it >= 0 }?.let {

@@ -53,6 +53,24 @@ internal class CenterZoomLinearLayoutManager(
             0
         }
     }
+
+    override fun scrollToPosition(position: Int) {
+        val offset = (if (orientation == HORIZONTAL) width else height) / 2
+        // only works because all children have the same width/height!
+        val viewOffset = getChildAt(0)?.let { (if (orientation == HORIZONTAL) it.width else it.height) / 2 } ?: 0
+        super.scrollToPositionWithOffset(position, offset - viewOffset)
+    }
+
+    override fun smoothScrollToPosition(
+        recyclerView: RecyclerView,
+        state: RecyclerView.State?,
+        position: Int
+    ) {
+        super.smoothScrollToPosition(recyclerView, state, position)
+        val smoothScroller: SmoothScroller = CenterSmoothScroller(recyclerView.context)
+        smoothScroller.targetPosition = position
+        startSmoothScroll(smoothScroller)
+    }
 /*
     fun smoothScrollToCenterPosition(
         recyclerView: RecyclerView,
@@ -106,7 +124,7 @@ internal class CenterZoomLinearLayoutManager(
             }
         }
     }
-/*
+
     private class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
         override fun calculateDtToFit(
             viewStart: Int,
@@ -118,5 +136,4 @@ internal class CenterZoomLinearLayoutManager(
             return boxStart + (boxEnd - boxStart) / 2 - (viewStart + (viewEnd - viewStart) / 2)
         }
     }
- */
 }

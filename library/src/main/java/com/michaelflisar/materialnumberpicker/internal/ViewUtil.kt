@@ -274,6 +274,8 @@ internal object ViewUtil {
             val height = LinearLayout.LayoutParams.MATCH_PARENT
             val width = itemWidth * (1 + adapter.visibleOffsetItems * 2)
 
+            L.d("SCROLLER CALC", picker) { "width = $width" }
+
             // TODO: HACK: itemWidth is just supplied because TextView with wrap_content does cut off edges slightly if font is dynamically changed to bold...
             adapter.emptyItemWidth = itemWidth
             adapter.itemWidth = itemWidth

@@ -47,7 +47,7 @@ class IntPicker @JvmOverloads constructor(
             array.getInteger(R.styleable.MaterialNumberPickerInteger_mnp_stepSizeLargeInt, 1)
         val prefix = array.getString(R.styleable.MaterialNumberPickerInteger_mnp_prefix) ?: ""
         val suffix = array.getString(R.styleable.MaterialNumberPickerInteger_mnp_suffix) ?: ""
-        val scrollerVisibleOffsetItems = array.getInt(R.styleable.MaterialNumberPickerInteger_mnp_scrollerVisibleOffsetItems, 0)
+        val scrollerVisibleOffsetItems = array.getInt(R.styleable.MaterialNumberPickerInteger_mnp_scrollerVisibleOffsetItems, MaterialNumberPicker.DEFAULT_OFFSET_ITEMS)
 
         val formatter = { value: Int ->
             prefix + value.toString() + suffix

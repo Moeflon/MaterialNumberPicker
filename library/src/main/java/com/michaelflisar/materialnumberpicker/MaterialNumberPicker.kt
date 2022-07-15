@@ -4,7 +4,7 @@ import android.text.InputType
 
 object MaterialNumberPicker {
 
-    const val DEFAULT_OFFSET_ITEMS = 2
+    var DEFAULT_OFFSET_ITEMS = 1
 
     // ordinal must match the array resource array values!
     enum class DataType(val inputType: kotlin.Int) {

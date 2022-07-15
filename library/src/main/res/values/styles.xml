@@ -13,7 +13,6 @@
         <item name="mnp_stepSizeLargeInt">1</item>
         <item name="mnp_longPressRepeatClicks">true</item>
         <item name="mnp_buttonWidth">0dp</item>
-        <item name="mnp_scrollerVisibleOffsetItems">2</item>
         <item name="mnp_editTextStyle">@style/MaterialNumberPicker.EditTextStyle</item>
     </style>
 
@@ -25,7 +24,6 @@
         <item name="mnp_stepSizeLargeFloat">0.1</item>
         <item name="mnp_longPressRepeatClicks">true</item>
         <item name="mnp_buttonWidth">0dp</item>
-        <item name="mnp_scrollerVisibleOffsetItems">2</item>
         <item name="mnp_commas">-1</item>
         <item name="mnp_editTextStyle">@style/MaterialNumberPicker.EditTextStyle</item>
     </style>

@@ -128,7 +128,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="4dp"
-                app:mnp_buttonWidth="48dp"
                 app:mnp_longPressRepeatClicks="true"
                 app:mnp_maxFloat="100.0"
                 app:mnp_minFloat="0.0"

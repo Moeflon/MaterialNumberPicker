@@ -87,8 +87,7 @@ class DemoActivity : AppCompatActivity() {
             10,
             50, // select same value as stepSize to disable secondary buttons
             { "N=" + it.toString() + "s" }, // custom formatter, in this case it adds prefix and suffix
-            { it.toIntOrNull() },
-            2
+            { it.toIntOrNull() }
         )
 
         if (savedInstanceState == null) {
@@ -103,8 +102,7 @@ class DemoActivity : AppCompatActivity() {
             1,
             2,
             { it.toString() + "x" },
-            { it.replace("x", "").toIntOrNull() },
-            2
+            { it.replace("x", "").toIntOrNull() }
         )
         if (savedInstanceState == null) {
             binding.mnp11.setValue(17)
@@ -174,8 +172,7 @@ class DemoActivity : AppCompatActivity() {
                 1f,
                 1f,
                 { "${it}$randomChar" },
-                { it.replace("$randomChar", "").toFloatOrNull() },
-                2
+                { it.replace("$randomChar", "").toFloatOrNull() }
             )
             val randomValue = Random.nextInt(0, 100).toFloat()
             logInfo(binding.mnp14, "Random value: $randomValue | randomChar: $randomChar")
