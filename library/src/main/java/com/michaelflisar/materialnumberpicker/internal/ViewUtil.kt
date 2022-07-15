@@ -2,7 +2,6 @@ package com.michaelflisar.materialnumberpicker.internal
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.michaelflisar.materialnumberpicker.AbstractMaterialNumberPicker
 import com.michaelflisar.materialnumberpicker.R
@@ -235,7 +235,6 @@ internal object ViewUtil {
         inputView: InputView.Scroller<T, Picker>?
     ): InputView<T, Picker> where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
 
-
         val rv = inputView?.recyclerView ?: RecyclerView(picker.context).apply {
             id = R.id.number_picker_recycler_view
         }
@@ -245,60 +244,11 @@ internal object ViewUtil {
             picker.orientation,
             false
         )
-        val adapter = inputView?.adapter ?: NumberPickerAdapter<T, Picker>(
+        val adapter = inputView?.adapter ?: NumberPickerAdapter(
             picker,
-            clickListener = { vh, item ->
-                val offset = helper.calculateDistanceToFinalSnap(lm, vh.itemView)!!
-                if (offset[0] != 0 || offset[1] != 0) {
-                    rv.smoothScrollBy(offset[0], offset[1])
-                }
-            },
+            clickListener = { vh, item -> picker.setValue(item, true) },
             picker.setup.scrollerVisibleOffsetItems
         )
-
-        if (inputView == null) {
-            rv.layoutManager = lm
-            helper.attachToRecyclerView(rv)
-            rv.adapter = adapter
-            rv.setHasFixedSize(false)
-
-            rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                var lastSnapIndex: Int? = null
-
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        onScrollChanged()
-                    }
-                }
-
-                private fun onScrollChanged() {
-                    val snapView = helper.findSnapView(rv.layoutManager)
-                    val snapIndex = snapView?.let { rv.getChildAdapterPosition(it) }
-                    if (snapIndex != null && snapIndex != lastSnapIndex) {
-                        Log.d(
-                            "Scroller",
-                            "onScrolled - snapIndex = $snapIndex (lastSnapIndex = $lastSnapIndex)"
-                        )
-
-                        lastSnapIndex = snapIndex
-                        val item = adapter.getItem(snapIndex)
-                        // TODO: state updaten
-                        item?.let {
-                            picker.setValue(it)
-                            // picker.inputView.updateDisplayedValue(picker, picker.setup, it, false)
-                        }
-
-                    }
-                }
-            })
-        } else {
-            picker.removeView(rv)
-            adapter.reload()
-        }
 
         // 2) RecyclerView (re)attachen
         val scrollerItemSize = picker.context.getDimen(R.dimen.mnp_scroller_item_size).toInt()
@@ -311,6 +261,9 @@ internal object ViewUtil {
             val width = LinearLayout.LayoutParams.MATCH_PARENT
             val height = scrollerItemSize * (1 + adapter.visibleOffsetItems * 2)
 
+            adapter.emptyItemWidth = null
+            adapter.itemWidth = null
+
             rv.minimumWidth = itemWidth + rv.paddingLeft + rv.paddingRight
             LinearLayout.LayoutParams(width, height)
         } else {
@@ -321,12 +274,25 @@ internal object ViewUtil {
             val height = LinearLayout.LayoutParams.MATCH_PARENT
             val width = itemWidth * (1 + adapter.visibleOffsetItems * 2)
 
+            // TODO: HACK: itemWidth is just supplied because TextView with wrap_content does cut off edges slightly if font is dynamically changed to bold...
+            adapter.emptyItemWidth = itemWidth
+            adapter.itemWidth = itemWidth
+
             rv.minimumHeight = scrollerItemSize + rv.paddingTop + rv.paddingBottom
             LinearLayout.LayoutParams(width, height)
         }
+
+        if (inputView == null) {
+            rv.layoutManager = lm
+            helper.attachToRecyclerView(rv)
+            rv.adapter = adapter
+        } else {
+            picker.removeView(rv)
+            adapter.reload()
+        }
         picker.addView(rv, lp)
 
-        return inputView ?: InputView.Scroller(rv, lm, helper, adapter)
+        return inputView ?: InputView.Scroller(picker, rv, lm, helper, adapter)
     }
 
     private fun <T, Picker> getMeasuredMaxItemWidth(
@@ -334,9 +300,7 @@ internal object ViewUtil {
         itemLayout: Int
     ): Int where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
         val longestValue = picker.setup.longestValue
-
         val maxText = picker.setup.formatter(longestValue)//.map { "W" }.joinToString("")
-        Log.d("LONGEST VALUE", "value = $longestValue => $maxText")
         val v = LayoutInflater.from(picker.context).inflate(itemLayout, picker, false)
         v.findViewById<TextView>(R.id.text).apply {
             text = maxText

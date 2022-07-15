@@ -29,4 +29,15 @@ object MaterialNumberPicker {
         /* 0 */ Input,
         /* 1 */ Scroll
     }
+
+    /*
+     * offer lazy logging
+     */
+    var LOGGER: ((level: Int, tag: String, info: String) -> Unit)? = null
+
+
+
+    // TODO
+    // [ ] vertical scroller: items in bold are still slightly cut off => fixed via "Hack"
+    // [ ] animated scroll to position in horizontal scroller is jumping if target view is not yet visible!
 }

@@ -12,9 +12,9 @@ import com.michaelflisar.materialnumberpicker.picker.FloatPicker
 import com.michaelflisar.materialnumberpicker.picker.IntPicker
 import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 import com.michaelflisar.materialnumberpicker.setup.NumberPickerSetupMinMax
-import kotlin.collections.ArrayList
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.random.Random
 
 class DemoActivity : AppCompatActivity() {
 
@@ -31,7 +31,8 @@ class DemoActivity : AppCompatActivity() {
         setContentView(view)
         setSupportActionBar(binding.toolbar)
 
-        val pickersFloat = listOf(binding.mnp2, binding.mnp5, binding.mnp6, binding.mnp12, binding.mnp14)
+        val pickersFloat =
+            listOf(binding.mnp2, binding.mnp5, binding.mnp6, binding.mnp12, binding.mnp14)
         val pickersInt =
             listOf(binding.mnp1, binding.mnp3, binding.mnp4, binding.mnp11, binding.mnp13)
 
@@ -44,7 +45,10 @@ class DemoActivity : AppCompatActivity() {
             it.onInvalidValueSelected =
                 { picker: FloatPicker, invalidInput: String?, invalidValue: Float?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast(picker, "Invalid float value: $invalidInput | $invalidValue (button = $fromButton)")
+                    showToast(
+                        picker,
+                        "Invalid float value: $invalidInput | $invalidValue (button = $fromButton)"
+                    )
                 }
         }
 
@@ -57,7 +61,10 @@ class DemoActivity : AppCompatActivity() {
             it.onInvalidValueSelected =
                 { picker: IntPicker, invalidInput: String?, invalidValue: Int?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast(picker, "Invalid int value: $invalidInput | $invalidValue (button = $fromButton)")
+                    showToast(
+                        picker,
+                        "Invalid int value: $invalidInput | $invalidValue (button = $fromButton)"
+                    )
                 }
         }
 
@@ -157,6 +164,22 @@ class DemoActivity : AppCompatActivity() {
         }
         binding.bt50.setOnClickListener {
             setPickers(50)
+        }
+        binding.btSetupAndValue.setOnClickListener {
+            val randomChar = (65 + Random.nextInt(0, 25)).toChar()
+            binding.mnp14.setup = NumberPickerSetupMinMax(
+                10f,
+                0f,
+                100f,
+                1f,
+                1f,
+                { "${it}$randomChar" },
+                { it.replace("$randomChar", "").toFloatOrNull() },
+                2
+            )
+            val randomValue = Random.nextInt(0, 100).toFloat()
+            logInfo(binding.mnp14, "Random value: $randomValue | randomChar: $randomChar")
+            binding.mnp14.setValue(randomValue, false)
         }
     }
 

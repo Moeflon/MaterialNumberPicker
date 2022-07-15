@@ -2,4 +2,5 @@
 <resources>
     <dimen name="mnp_min_view_size">48dp</dimen>
     <dimen name="mnp_scroller_item_size">48dp</dimen>
+    <dimen name="mnp_scroller_item_padding">2dp</dimen>
 </resources>

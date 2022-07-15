@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import com.michaelflisar.materialnumberpicker.internal.InputView
+import com.michaelflisar.materialnumberpicker.internal.L
 import com.michaelflisar.materialnumberpicker.internal.ViewUtil
 import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 import kotlinx.parcelize.Parcelize
@@ -199,7 +199,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
             inputView.updateDisplayedValue(this as Picker, setup, value, false)
 
         } catch (e: Exception) {
-            Log.e("Scroller", "Exception", e)
+            L.e("MaterialNumberPicker", e)
         } finally {
             array.recycle()
         }

@@ -1,7 +1,6 @@
 package com.michaelflisar.materialnumberpicker.internal
 
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,9 @@ internal class NumberPickerAdapter<T, Picker>(
     visibleItemsAboveBelow: Int
 ) : RecyclerView.Adapter<NumberPickerAdapter.ViewHolder<T, Picker>>() where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
 
+    var emptyItemWidth: Int? = null
+    var itemWidth: Int? = null
+
     enum class Layout {
         Horizontal,
         HorizontalEmpty,
@@ -31,10 +33,10 @@ internal class NumberPickerAdapter<T, Picker>(
         CenterZoomLinearLayoutManager.ScalableViewHolder where T : Number, T : Comparable<T>, Picker : com.michaelflisar.materialnumberpicker.AbstractMaterialNumberPicker<T, Picker> {
 
         abstract val textView: TextView
-        abstract val viewToScale: View
+        abstract val viewToScale: View?
 
         override fun scaleOnScroll(factor: Float, isCenter: Boolean) {
-            viewToScale.apply {
+            viewToScale?.apply {
                 scaleX = factor
                 scaleY = factor
             }
@@ -66,7 +68,7 @@ internal class NumberPickerAdapter<T, Picker>(
             itemView.setOnClickListener {
                 adapter.clickListener(this, item)
             }
-            Log.d("Scroller", "bind = $item | ${textView.text}")
+            L.d("NumberPickerAdapter", adapter.picker) { "bind = $item | ${textView.text}" }
         }
     }
 
@@ -78,7 +80,7 @@ internal class NumberPickerAdapter<T, Picker>(
         view
     ) where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
         override val textView = view as TextView
-        override val viewToScale = textView
+        override val viewToScale = null
     }
 
     private var items: List<T> = picker.setup.allValidValuesSorted
@@ -109,7 +111,7 @@ internal class NumberPickerAdapter<T, Picker>(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder<T, Picker> {
         val layout = Layout.values()[viewType]
-        return when (layout) {
+        val vh = when (layout) {
             Layout.Horizontal -> {
                 val view = LayoutInflater.from(viewGroup.context)
                     .inflate(R.layout.mnp_scroller_item_horizontal, viewGroup, false)
@@ -131,16 +133,31 @@ internal class NumberPickerAdapter<T, Picker>(
                 ViewHolderEmpty(this, view)
             }
         }
+        return vh
     }
 
     override fun onBindViewHolder(holder: ViewHolder<T, Picker>, position: Int) {
-        Log.d("Scroller", "onBindViewHolder = $holder")
+        L.d("NumberPickerAdapter", picker) { "onBindViewHolder = $holder" }
         if (holder is ViewHolderItem<T, Picker>) {
+
+            // set min width, actually just necessary for the horizontal scroller...
+            val minWidth = itemWidth ?: 0
+            holder.textView.minimumWidth = minWidth
+
             val pos = position - visibleOffsetItems
             val item = items[pos]
             holder.bind(item)
+
         } else {
-            // nothing to do
+
+            // set min width, actually just necessary for the horizontal scroller...
+            if (holder is ViewHolderEmpty<T, Picker>) {
+                val minWidth =
+                    emptyItemWidth ?: picker.context.getDimen(R.dimen.mnp_scroller_item_size)
+                        .toInt()
+                holder.itemView.minimumWidth = minWidth
+            }
+
         }
     }
 

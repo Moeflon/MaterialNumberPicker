@@ -1,11 +1,16 @@
 package com.michaelflisar.materialnumberpicker.internal
 
+import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import kotlin.math.abs
 import kotlin.math.min
+
 
 internal class CenterZoomLinearLayoutManager(
     private val recyclerView: RecyclerView,
@@ -48,7 +53,16 @@ internal class CenterZoomLinearLayoutManager(
             0
         }
     }
-
+/*
+    fun smoothScrollToCenterPosition(
+        recyclerView: RecyclerView,
+        position: Int
+    ) {
+        val smoothScroller: SmoothScroller = CenterSmoothScroller(recyclerView.context)
+        smoothScroller.targetPosition = position
+        startSmoothScroll(smoothScroller)
+    }
+*/
     private fun scaleChildren() {
 
         val midpoint = if (orientation == HORIZONTAL) {
@@ -92,4 +106,17 @@ internal class CenterZoomLinearLayoutManager(
             }
         }
     }
+/*
+    private class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
+        override fun calculateDtToFit(
+            viewStart: Int,
+            viewEnd: Int,
+            boxStart: Int,
+            boxEnd: Int,
+            snapPreference: Int
+        ): Int {
+            return boxStart + (boxEnd - boxStart) / 2 - (viewStart + (viewEnd - viewStart) / 2)
+        }
+    }
+ */
 }
