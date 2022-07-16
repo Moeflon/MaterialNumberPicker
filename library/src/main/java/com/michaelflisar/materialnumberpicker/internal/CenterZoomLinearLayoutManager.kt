@@ -1,6 +1,7 @@
 package com.michaelflisar.materialnumberpicker.internal
 
 import android.content.Context
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -126,6 +127,8 @@ internal class CenterZoomLinearLayoutManager(
     }
 
     private class CenterSmoothScroller(context: Context) : LinearSmoothScroller(context) {
+        //override fun getVerticalSnapPreference(): Int = LinearSmoothScroller.SNAP_TO_START
+        //override fun getHorizontalSnapPreference(): Int = LinearSmoothScroller.SNAP_TO_START
         override fun calculateDtToFit(
             viewStart: Int,
             viewEnd: Int,

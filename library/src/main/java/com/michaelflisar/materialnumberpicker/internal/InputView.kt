@@ -9,6 +9,8 @@ import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 
 internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
 
+    abstract val lazyUI: Boolean
+
     // Update UI (EditText, RecyclerView)
     abstract fun updateDisplayedValue(
         picker: Picker,
@@ -26,6 +28,8 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
     class Input<T, Picker>(
         val editText: EditText
     ) : InputView<T, Picker>() where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
+
+        override val lazyUI = false
 
         override fun updateDisplayedValue(
             picker: Picker,
@@ -62,8 +66,11 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
         val adapter: NumberPickerAdapter<T, Picker>
     ) : InputView<T, Picker>() where T : Number, T : Comparable<T>, Picker : AbstractMaterialNumberPicker<T, Picker> {
 
+        override val lazyUI = true
+
         private var scroll: Scroll = Scroll.None
         private var onLayoutListener: View.OnLayoutChangeListener? = null
+        private var postRunnable: Runnable? = null
 
         sealed class Scroll {
             object None : Scroll() {
@@ -124,6 +131,8 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
             ) { "Cancel pending updates: $scroll | onLayoutListener = $onLayoutListener" }
             onLayoutListener?.let { recyclerView.cancelOnNextLayout(it) }
             onLayoutListener = null
+            postRunnable?.let { recyclerView.removeCallbacks(it) }
+            postRunnable = null
             scroll = Scroll.None
             recyclerView.stopScroll()
         }
@@ -135,14 +144,17 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
             }
         }
 
+        private fun post(function: () -> Unit) {
+            postRunnable?.let { recyclerView.removeCallbacks(it) }
+            postRunnable = Runnable { function() }
+            recyclerView.post(postRunnable)
+        }
+
         // ------------
         // Scroll Event
         // ------------
 
         private fun onCheckScroll() {
-            val name =
-                picker.context.resources.getResourceName(picker.id).substringAfterLast(":id/")
-
             val scroll = scroll
 
             L.d("Scroller", picker) {
@@ -154,7 +166,6 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
                     }"
                 } else "Check Scroll: $scroll"
             }
-
 
             when (scroll) {
                 Scroll.None -> {
@@ -181,10 +192,10 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
                                     "Scroller",
                                     picker
                                 ) { "Instant scroll with snap helper... (${offset[0]}, ${offset[1]})" }
-                                recyclerView.scrollBy(offset[0], offset[1])
-                                //doOnNextLayout {
-                                onCheckScroll()
-                                //}
+                                post {
+                                    recyclerView.scrollBy(offset[0], offset[1])
+                                    onCheckScroll()
+                                }
                             }
                         } else {
                             // we are done
@@ -197,11 +208,17 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
                             recyclerView.smoothScrollToPosition(scroll.position)
                             //layoutManager.smoothScrollToCenterPosition(recyclerView, scroll.position)
                         } else {
-                            L.d("Scroller", picker) { "Instant scroll to pos..." }
-                            recyclerView.scrollToPosition(scroll.position)
-                            doOnNextLayout {
+                            L.d("Scroller", picker) { "Instant scroll to pos... (adapter.itemCount = ${recyclerView.adapter?.itemCount})" }
+
+                            post {
+                                recyclerView.scrollToPosition(scroll.position)
                                 onCheckScroll()
                             }
+
+                            // recyclerView.scrollToPosition(scroll.position)
+                            // doOnNextLayout {
+                            //     onCheckScroll()
+                            // }
                         }
                     }
                 }
@@ -214,7 +231,6 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
 
                         L.d("Scroller", picker) { "Scrolled MANUALLY: $snapIndex - $item" }
                         if (item != null) {
-                            // picker does take care to only apply values if they changed, no need to do this here as well
                             picker.setValue(item)
                         }
                     } else {

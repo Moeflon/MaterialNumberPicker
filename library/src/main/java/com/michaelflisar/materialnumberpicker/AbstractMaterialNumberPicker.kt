@@ -115,13 +115,14 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     /*
      * returns true, if value was set (either by changing it or because it is already set), false otherwise
      */
-    fun setValue(value: T, smooth: Boolean = true): Boolean {
+    fun setValue(value: T, smooth: Boolean = true, notifyListener: Boolean = true): Boolean {
         if (!setup.isValueAllowed(style, value))
             return false
-        if (this.value != value) {
+        val valueChanged = this.value != value
+        if (inputView.lazyUI || valueChanged) {
             this.value = value
-            onValueChanged(true, smooth, true)
-            return true
+            onValueChanged(true, smooth, notifyListener && valueChanged)
+            return valueChanged
         }
         return true
     }

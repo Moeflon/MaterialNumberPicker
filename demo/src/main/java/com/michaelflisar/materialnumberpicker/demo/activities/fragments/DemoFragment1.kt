@@ -1,35 +1,35 @@
-package com.michaelflisar.materialnumberpicker.demo.activities
+package com.michaelflisar.materialnumberpicker.demo.activities.fragments
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import com.michaelflisar.materialnumberpicker.AbstractMaterialNumberPicker
-import com.michaelflisar.materialnumberpicker.MaterialNumberPicker
-import com.michaelflisar.materialnumberpicker.demo.databinding.ActivityDemoBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.michaelflisar.materialnumberpicker.demo.activities.classes.Util
+import com.michaelflisar.materialnumberpicker.demo.activities.classes.WeightNumberPickerSetup
+import com.michaelflisar.materialnumberpicker.demo.databinding.Fragment1Binding
 import com.michaelflisar.materialnumberpicker.picker.FloatPicker
 import com.michaelflisar.materialnumberpicker.picker.IntPicker
-import com.michaelflisar.materialnumberpicker.setup.INumberPickerSetup
 import com.michaelflisar.materialnumberpicker.setup.NumberPickerSetupMinMax
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.random.Random
 
-class DemoActivity : AppCompatActivity() {
+class DemoFragment1 : Fragment() {
 
-    private lateinit var binding: ActivityDemoBinding
+    private lateinit var binding: Fragment1Binding
 
-    private var toast: Toast? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = Fragment1Binding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-        binding = ActivityDemoBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-        setSupportActionBar(binding.toolbar)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val pickersFloat =
             listOf(binding.mnp2, binding.mnp5, binding.mnp6, binding.mnp12, binding.mnp14)
@@ -40,12 +40,12 @@ class DemoActivity : AppCompatActivity() {
         pickersFloat.forEach {
             it.onValueChangedListener =
                 { picker: FloatPicker, value: Float, fromUser: Boolean ->
-                    showToast(picker, "New float value: $value (user = $fromUser)")
+                    Util.showToast(picker, "New float value: $value (user = $fromUser)")
                 }
             it.onInvalidValueSelected =
                 { picker: FloatPicker, invalidInput: String?, invalidValue: Float?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast(
+                    Util.showToast(
                         picker,
                         "Invalid float value: $invalidInput | $invalidValue (button = $fromButton)"
                     )
@@ -56,12 +56,12 @@ class DemoActivity : AppCompatActivity() {
         pickersInt.forEach {
             it.onValueChangedListener =
                 { picker: IntPicker, value: Int, fromUser: Boolean ->
-                    showToast(picker, "New int value: $value (user = $fromUser)")
+                    Util.showToast(picker, "New int value: $value (user = $fromUser)")
                 }
             it.onInvalidValueSelected =
                 { picker: IntPicker, invalidInput: String?, invalidValue: Int?, fromButton: Boolean ->
                     // most likely, if fromButton == true, you don't want to handle this, but fir the demo we show a message in every case
-                    showToast(
+                    Util.showToast(
                         picker,
                         "Invalid int value: $invalidInput | $invalidValue (button = $fromButton)"
                     )
@@ -125,7 +125,7 @@ class DemoActivity : AppCompatActivity() {
             pickersInt.forEach {
                 for (adjustment in stepsToTryInt) {
                     if (it.setValue(it.value + adjustment * factor)) {
-                        logInfo(it, "Accepted value: ${it.value}")
+                        Util.logInfo(it, "Accepted value: ${it.value}")
                         break
                     }
                 }
@@ -133,7 +133,7 @@ class DemoActivity : AppCompatActivity() {
             pickersFloat.forEach {
                 for (adjustment in stepsToTryFloat) {
                     if (it.setValue(it.value + adjustment * factor)) {
-                        logInfo(it, "Accepted value: ${it.value}")
+                        Util.logInfo(it, "Accepted value: ${it.value}")
                         break
                     }
                 }
@@ -175,113 +175,9 @@ class DemoActivity : AppCompatActivity() {
                 { it.replace("$randomChar", "").toFloatOrNull() }
             )
             val randomValue = Random.nextInt(0, 100).toFloat()
-            logInfo(binding.mnp14, "Random value: $randomValue | randomChar: $randomChar")
+            Util.logInfo(binding.mnp14, "Random value: $randomValue | randomChar: $randomChar")
             binding.mnp14.setValue(randomValue, false)
         }
     }
 
-    private fun logInfo(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
-        val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
-        Log.d("LOG INFO", "[$name] $info")
-    }
-
-    private fun showToast(picker: AbstractMaterialNumberPicker<*, *>, info: String) {
-        val name = resources.getResourceName(picker.id).substringAfterLast(":id/")
-        val fullInfo = "[$name] $info"
-        Log.d("SHOW TOAST", fullInfo)
-        toast?.cancel()
-        toast = Toast.makeText(this, fullInfo, Toast.LENGTH_SHORT)
-        toast?.show()
-    }
-
-    /*
-     * Provides weights like following:
-     * 0..10kg:     1kg steps
-     * 10..20kg:    1kg + 2.5kg steps
-     * 20..50kg:    2.5kg steps
-     * 50..1000kg   5kg steps
-     */
-    class WeightNumberPickerSetup(
-        override val defaultValue: Float
-    ) : INumberPickerSetup<Float>/*,
-        INumberPickerSetup.ButtonProvider<Float>,
-        INumberPickerSetup.SecondaryButtonProvider<Float> */ {
-
-        override val type = MaterialNumberPicker.DataType.Float
-        override val scrollerVisibleOffsetItems = 2
-
-        override val formatter = { value: Float ->
-            if (value.toInt().toFloat() == value) "${value.toInt()}kg" else "${value}kg"
-        }
-
-        override val parser = { value: String -> value.replace("kg", "").toFloatOrNull() }
-
-        /*
-        override fun calcPrimaryButtonResult(
-            currentValue: Float,
-            button: INumberPickerSetup.Button
-        ): Float? {
-        }
-
-        override fun calcSecondaryButtonResult(
-            currentValue: Float,
-            button: INumberPickerSetup.Button
-        ): Float? {
-        }*/
-
-        override fun isValueAllowed(style: MaterialNumberPicker.Style, value: Float?): Boolean {
-            if (value == null || value < 0f || value > 1000f)
-                return false
-            // 0..10kg => all values are allowed, if the are natural numbers
-            if (value <= 10f)
-                return ceil(value) == floor(value)
-            // 10..20 => all values are allowed, if the are natural numbers or divedable by 2.5
-            else if (value <= 20f)
-                return ceil(value) == floor(value) || (value % 2.5) == 0.0
-            // 20..50 => all values are allowed, if they are divedable by 2.5
-            else if (value <= 20f)
-                return (value % 2.5) == 0.0
-            // 50..1000 => all values are allowed, if they are divedable by 5
-            else
-                return (value % 5.0) == 0.0
-        }
-
-        override val longestValue = 5555.5f
-
-        override val allValidValuesSorted by lazy {
-            val values = ArrayList<Float>()
-
-            // 0..10
-            var value = 0f
-            while (value < 10f) {
-                values.add(value++)
-            }
-
-            // 10..20
-            value = 10f
-            while (value < 20) {
-                if (value == 13f)
-                    values.add(12.5f)
-                else if (value == 18f)
-                    values.add(17.5f)
-                values.add(value++)
-            }
-
-            // 20..50
-            value = 20f
-            while (value < 50f) {
-                values.add(value)
-                value += 2.5f
-            }
-
-            // 50..1000
-            value = 50f
-            while (value <= 1000f) {
-                values.add(value)
-                value += 5f
-            }
-
-            values.sorted()
-        }
-    }
 }

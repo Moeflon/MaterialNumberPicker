@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ****************************** -->
+            <!-- Region 1 - horizontal examples -->
+            <!-- ****************************** -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Info"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="The picker supports min/max values, custom step size and custom secondary step size (or alternatively a custom value provider in code that gives you even more flexiblility) for button clicks as well as prefix/suffix. Buttons do support repeating the click event on long press.\nThere are also options to allow to pick integers or floats in a picker.\nYou can also provide custom icons and adjust the size of the buttons.\nAdditionally there are different styles as well as different layouts (input and scroll picker).\nEverything can be customised in the XML and/or code." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Horizontal Examples"
+                android:textStyle="bold" />
+
+            <com.michaelflisar.materialnumberpicker.picker.IntPicker
+                android:id="@+id/mnp1"
+                style="@style/MaterialNumberPickerInteger.Horizontal.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxInt="1000"
+                app:mnp_minInt="0"
+                app:mnp_prefix=""
+                app:mnp_stepSizeInt="1"
+                app:mnp_stepSizeLargeInt="10"
+                app:mnp_suffix="kg"
+                app:mnp_valueInt="100" />
+
+            <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                android:id="@+id/mnp2"
+                style="@style/MaterialNumberPickerFloat.Horizontal.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_commas="2"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxFloat="10.0"
+                app:mnp_minFloat="0.0"
+                app:mnp_prefix="X = "
+                app:mnp_stepSizeFloat="0.1"
+                app:mnp_stepSizeLargeFloat="0.1"
+                app:mnp_suffix=""
+                app:mnp_valueFloat="5.0" />
+
+            <com.michaelflisar.materialnumberpicker.picker.IntPicker
+                android:id="@+id/mnp3"
+                style="@style/MaterialNumberPickerInteger.Horizontal.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="0dp"
+                app:mnp_iconDown="@drawable/ic_baseline_more_vert_24"
+                app:mnp_iconDownLarge="@drawable/ic_baseline_drag_indicator_24"
+                app:mnp_iconUp="@drawable/ic_baseline_more_vert_24"
+                app:mnp_iconUpLarge="@drawable/ic_baseline_drag_indicator_24"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxInt="100"
+                app:mnp_minInt="0"
+                app:mnp_prefix="X"
+                app:mnp_stepSizeInt="1"
+                app:mnp_stepSizeLargeInt="5"
+                app:mnp_suffix="mins"
+                app:mnp_valueInt="50" />
+
+            <com.michaelflisar.materialnumberpicker.picker.IntPicker
+                android:id="@+id/mnp4"
+                style="@style/MaterialNumberPickerInteger.Horizontal.None"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="64dp"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxInt="100"
+                app:mnp_minInt="0"
+                app:mnp_stepSizeInt="1"
+                app:mnp_stepSizeLargeInt="5"
+                app:mnp_valueInt="50" />
+
+            <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                android:id="@+id/mnp5"
+                style="@style/MaterialNumberPickerFloat.Horizontal.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxFloat="100.0"
+                app:mnp_minFloat="0.0"
+                app:mnp_prefix=""
+                app:mnp_stepSizeFloat="1.0"
+                app:mnp_stepSizeLargeFloat="2.5"
+                app:mnp_style="scroll"
+                app:mnp_suffix="ABC"
+                app:mnp_valueFloat="50.0" />
+
+            <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                android:id="@+id/mnp6"
+                style="@style/MaterialNumberPickerFloat.Horizontal.Filled"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="4dp"
+                app:mnp_buttonWidth="48dp"
+                app:mnp_longPressRepeatClicks="true"
+                app:mnp_maxFloat="100.0"
+                app:mnp_minFloat="0.0"
+                app:mnp_prefix="ABC"
+                app:mnp_stepSizeFloat="1.0"
+                app:mnp_stepSizeLargeFloat="2.5"
+                app:mnp_style="scroll"
+                app:mnp_suffix=""
+                app:mnp_valueFloat="50.0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Vertical Examples"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.michaelflisar.materialnumberpicker.picker.IntPicker
+                    android:id="@+id/mnp11"
+                    style="@style/MaterialNumberPickerInteger.Vertical.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:mnp_buttonWidth="0dp"
+                    app:mnp_longPressRepeatClicks="true"
+                    app:mnp_maxInt="100"
+                    app:mnp_minInt="0"
+                    app:mnp_stepSizeInt="1"
+                    app:mnp_stepSizeLargeInt="5"
+                    app:mnp_valueInt="50" />
+
+                <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                    android:id="@+id/mnp12"
+                    style="@style/MaterialNumberPickerFloat.Vertical.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="#ff0000"
+                    android:backgroundTintMode="add"
+                    app:mnp_longPressRepeatClicks="true"
+                    app:mnp_maxFloat="100.0"
+                    app:mnp_minFloat="0.0"
+                    app:mnp_prefix=""
+                    app:mnp_stepSizeFloat="1.0"
+                    app:mnp_stepSizeLargeFloat="2.5"
+                    app:mnp_style="scroll"
+                    app:mnp_suffix="'"
+                    app:mnp_valueFloat="50.0" />
+
+                <com.michaelflisar.materialnumberpicker.picker.IntPicker
+                    android:id="@+id/mnp13"
+                    style="@style/MaterialNumberPickerFloat.Vertical.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="#00ff00"
+                    android:backgroundTintMode="add"
+                    app:mnp_longPressRepeatClicks="true"
+                    app:mnp_maxInt="100"
+                    app:mnp_minInt="0"
+                    app:mnp_prefix=""
+                    app:mnp_stepSizeInt="1"
+                    app:mnp_stepSizeLargeInt="5"
+                    app:mnp_style="scroll"
+                    app:mnp_suffix="x"
+                    app:mnp_valueInt="10" />
+
+                <com.michaelflisar.materialnumberpicker.picker.FloatPicker
+                    android:id="@+id/mnp14"
+                    style="@style/MaterialNumberPickerFloat.Vertical.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="160dp"
+                    android:layout_margin="4dp"
+                    app:mnp_longPressRepeatClicks="true"
+                    app:mnp_maxFloat="100.0"
+                    app:mnp_minFloat="0.0"
+                    app:mnp_prefix=""
+                    app:mnp_stepSizeFloat="1.0"
+                    app:mnp_stepSizeLargeFloat="5.0"
+                    app:mnp_style="scroll"
+                    app:mnp_suffix="ABC"
+                    app:mnp_valueFloat="10.0" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="?colorPrimaryDark"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btDecrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Decrease" />
+
+                <Button
+                    android:id="@+id/btIncrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Increase" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="10" />
+
+                <Button
+                    android:id="@+id/bt25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="25" />
+
+                <Button
+                    android:id="@+id/bt50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="50" />
+
+                <Button
+                    android:id="@+id/btSetupAndValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="*" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
