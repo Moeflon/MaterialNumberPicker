@@ -21,21 +21,19 @@ class FloatPicker @JvmOverloads constructor(
     defStyleRes
 ) {
 
-    override val styleAttr = R.styleable.MaterialNumberPickerFloat
-    override val styleAttr_longPressRepeatClicks =
-        R.styleable.MaterialNumberPickerFloat_mnp_longPressRepeatClicks
-    override val styleAttr_buttonWidth = R.styleable.MaterialNumberPickerFloat_mnp_buttonWidth
-    override val styleAttr_style = R.styleable.MaterialNumberPickerFloat_mnp_style
-    override val styleAttr_android_background =
-        R.styleable.MaterialNumberPickerFloat_android_background
-    override val styleAttr_android_orientation =
-        R.styleable.MaterialNumberPickerFloat_android_orientation
-    override val styleAttr_icon_up = R.styleable.MaterialNumberPickerFloat_mnp_iconUp
-    override val styleAttr_icon_down = R.styleable.MaterialNumberPickerFloat_mnp_iconDown
-    override val styleAttr_icon_up_large = R.styleable.MaterialNumberPickerFloat_mnp_iconUpLarge
-    override val styleAttr_icon_down_large =
-        R.styleable.MaterialNumberPickerFloat_mnp_iconDownLarge
-    override val styleAttr_editTextStyle = R.styleable.MaterialNumberPickerFloat_mnp_editTextStyle
+    override val styleDefinitions = StyleDefinitions(
+        R.styleable.MaterialNumberPickerFloat,
+        R.styleable.MaterialNumberPickerFloat_mnp_longPressRepeatClicks,
+        R.styleable.MaterialNumberPickerFloat_mnp_buttonWidth,
+        R.styleable.MaterialNumberPickerFloat_mnp_style,
+        R.styleable.MaterialNumberPickerFloat_android_background,
+        R.styleable.MaterialNumberPickerFloat_android_orientation,
+        R.styleable.MaterialNumberPickerFloat_mnp_iconUp,
+        R.styleable.MaterialNumberPickerFloat_mnp_iconDown,
+        R.styleable.MaterialNumberPickerFloat_mnp_iconUpLarge,
+        R.styleable.MaterialNumberPickerFloat_mnp_iconDownLarge,
+        R.styleable.MaterialNumberPickerFloat_mnp_editTextStyle
+    )
 
     init {
         init()
@@ -51,7 +49,10 @@ class FloatPicker @JvmOverloads constructor(
         val prefix = array.getString(R.styleable.MaterialNumberPickerFloat_mnp_prefix) ?: ""
         val suffix = array.getString(R.styleable.MaterialNumberPickerFloat_mnp_suffix) ?: ""
         val commas = array.getInt(R.styleable.MaterialNumberPickerFloat_mnp_commas, -1)
-        val scrollerVisibleOffsetItems = array.getInt(R.styleable.MaterialNumberPickerFloat_mnp_scrollerVisibleOffsetItems, MaterialNumberPicker.DEFAULT_OFFSET_ITEMS)
+        val scrollerVisibleOffsetItems = array.getInt(
+            R.styleable.MaterialNumberPickerFloat_mnp_scrollerVisibleOffsetItems,
+            MaterialNumberPicker.DEFAULT_OFFSET_ITEMS
+        )
 
         val formatter = { value: Float ->
             val valueAsString = commas.takeIf { it >= 0 }?.let {

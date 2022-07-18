@@ -13,6 +13,13 @@ import com.michaelflisar.materialnumberpicker.demo.databinding.Fragment2Binding
 class DemoFragment2 : Fragment() {
 
     private lateinit var binding: Fragment2Binding
+    private lateinit var items: ArrayList<ItemWithPickerAdapter.Item>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        items = savedInstanceState?.getParcelableArrayList("ITEMS")
+            ?: ArrayList((0..100).map { ItemWithPickerAdapter.Item(it.toFloat(), it) })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +34,12 @@ class DemoFragment2 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recycler.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        binding.recycler.adapter = ItemWithPickerAdapter(requireContext(), (0..100).map { ItemWithPickerAdapter.Item(it.toFloat(), it) })
+        binding.recycler.adapter = ItemWithPickerAdapter(requireContext(), items)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("ITEMS", items)
     }
 
 }

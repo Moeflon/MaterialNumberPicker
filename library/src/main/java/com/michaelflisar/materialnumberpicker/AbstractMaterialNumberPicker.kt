@@ -36,17 +36,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     // abstract functions
     // -------------------
 
-    abstract val styleAttr: IntArray
-    abstract val styleAttr_longPressRepeatClicks: Int
-    abstract val styleAttr_buttonWidth: Int
-    abstract val styleAttr_style: Int
-    abstract val styleAttr_android_background: Int
-    abstract val styleAttr_android_orientation: Int
-    abstract val styleAttr_icon_up: Int
-    abstract val styleAttr_icon_down: Int
-    abstract val styleAttr_icon_up_large: Int
-    abstract val styleAttr_icon_down_large: Int
-    abstract val styleAttr_editTextStyle: Int
+    internal abstract val styleDefinitions: StyleDefinitions
 
     abstract fun initSetup(array: TypedArray): INumberPickerSetup<T>
     abstract fun initValue(array: TypedArray, setup: INumberPickerSetup<T>): T
@@ -165,31 +155,32 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     }
 
     fun init() {
+
         val array = context.theme.obtainStyledAttributes(
             attrs,
-            styleAttr,
+            styleDefinitions.styleAttr,
             defStyleAttr,
             defStyleRes
         )
 
         try {
 
-            longPressRepeatClicks = array.getBoolean(styleAttr_longPressRepeatClicks, true)
-            buttonWidth = array.getDimension(styleAttr_buttonWidth, 0f).toInt()
+            longPressRepeatClicks = array.getBoolean(styleDefinitions.longPressRepeatClicks, true)
+            buttonWidth = array.getDimension(styleDefinitions.buttonWidth, 0f).toInt()
 
-            orientation = array.getInteger(styleAttr_android_orientation, HORIZONTAL)
-            style = MaterialNumberPicker.Style.values()[array.getInteger(styleAttr_style, 0)]
-            background = array.getDrawable(styleAttr_android_background)
+            orientation = array.getInteger(styleDefinitions.android_orientation, HORIZONTAL)
+            style = MaterialNumberPicker.Style.values()[array.getInteger(styleDefinitions.style, 0)]
+            background = array.getDrawable(styleDefinitions.android_background)
 
-            iconUp = array.getResourceId(styleAttr_icon_up, 0)
-            iconDown = array.getResourceId(styleAttr_icon_down, 0)
+            iconUp = array.getResourceId(styleDefinitions.icon_up, 0)
+            iconDown = array.getResourceId(styleDefinitions.icon_down, 0)
             iconUpLarge =
-                array.getResourceId(styleAttr_icon_up_large, 0)
+                array.getResourceId(styleDefinitions.icon_up_large, 0)
             iconDownLarge =
-                array.getResourceId(styleAttr_icon_down_large, 0)
+                array.getResourceId(styleDefinitions.icon_down_large, 0)
 
             editTextStyleId = array.getResourceId(
-                styleAttr_editTextStyle,
+                styleDefinitions.editTextStyle,
                 R.style.MaterialNumberPicker_EditTextStyle
             )
 
@@ -214,12 +205,6 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
             )
             MaterialNumberPicker.Style.Scroll -> ViewUtil.initScrollViews(this as Picker, null)
         }
-    }
-
-    override fun setNestedScrollingEnabled(enabled: Boolean) {
-        //super.setNestedScrollingEnabled(enabled)
-        (inputView as? InputView.Scroller<T, Picker>)?.recyclerView?.isNestedScrollingEnabled =
-            enabled
     }
 
     // -----------
@@ -274,7 +259,7 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
     }
 
     // -------------------
-    // ViewState
+    // ViewState / Classes
     // -------------------
 
     @Parcelize
@@ -282,5 +267,19 @@ abstract class AbstractMaterialNumberPicker<T, Picker> @JvmOverloads constructor
         val superState: Parcelable?,
         val value: T
     ) : Parcelable where T : Number, T : Comparable<T>
+
+    internal class StyleDefinitions(
+        val styleAttr: IntArray,
+        val longPressRepeatClicks: Int,
+        val buttonWidth: Int,
+        val style: Int,
+        val android_background: Int,
+        val android_orientation: Int,
+        val icon_up: Int,
+        val icon_down: Int,
+        val icon_up_large: Int,
+        val icon_down_large: Int,
+        val editTextStyle: Int
+    )
 }
 

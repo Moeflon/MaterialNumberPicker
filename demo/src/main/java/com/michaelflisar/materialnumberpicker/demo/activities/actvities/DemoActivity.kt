@@ -1,7 +1,6 @@
 package com.michaelflisar.materialnumberpicker.demo.activities.actvities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.michaelflisar.materialnumberpicker.demo.R
@@ -15,7 +14,6 @@ class DemoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDemoBinding
 
-
     private var lastAttachedFragment: KClass<*>? = null
     private var selectedFragment: KClass<*> = DemoFragment1::class
 
@@ -28,6 +26,13 @@ class DemoActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setSupportActionBar(binding.toolbar)
+
+        if (savedInstanceState != null) {
+            selectedFragment =
+                Class.forName(savedInstanceState.getString("selectedFragment")).kotlin
+            lastAttachedFragment = savedInstanceState.getString("lastAttachedFragment")
+                ?.let { Class.forName(it).kotlin }
+        }
 
         updateFragment()
 
@@ -44,6 +49,12 @@ class DemoActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("selectedFragment", selectedFragment.java.name)
+        lastAttachedFragment?.let { outState.putString("lastAttachedFragment", it.java.name) }
+    }
+
     private fun updateFragment() {
 
         val ft = supportFragmentManager.beginTransaction()
@@ -53,10 +64,11 @@ class DemoActivity : AppCompatActivity() {
         val id = R.id.fragment
 
         val currentFragment = currentTag?.let { supportFragmentManager.findFragmentByTag(it) }
-        val nextFragment = supportFragmentManager.findFragmentByTag(tag) ?: supportFragmentManager.fragmentFactory.instantiate(
-            ClassLoader.getSystemClassLoader(),
-            selectedFragment.java.name
-        )
+        val nextFragment = supportFragmentManager.findFragmentByTag(tag)
+            ?: supportFragmentManager.fragmentFactory.instantiate(
+                ClassLoader.getSystemClassLoader(),
+                selectedFragment.java.name
+            )
 
         if (!nextFragment.isAdded)
             ft.add(id, nextFragment, tag)

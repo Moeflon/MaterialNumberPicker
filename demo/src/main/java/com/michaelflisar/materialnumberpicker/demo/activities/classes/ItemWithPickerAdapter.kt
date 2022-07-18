@@ -1,6 +1,7 @@
 package com.michaelflisar.materialnumberpicker.demo.activities.classes
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.michaelflisar.materialnumberpicker.demo.databinding.RowItemWithPicker
 import com.michaelflisar.materialnumberpicker.picker.FloatPicker
 import com.michaelflisar.materialnumberpicker.picker.IntPicker
 import com.michaelflisar.materialnumberpicker.setup.NumberPickerSetupMinMax
+import kotlinx.parcelize.Parcelize
 
 class ItemWithPickerAdapter internal constructor(
     context: Context,
@@ -104,8 +106,9 @@ class ItemWithPickerAdapter internal constructor(
         }
     }
 
+    @Parcelize
     class Item(
         var weight: Float,
         var reps: Int
-    )
+    ) : Parcelable
 }
