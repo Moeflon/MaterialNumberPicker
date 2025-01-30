@@ -1,5 +1,6 @@
 package com.michaelflisar.materialnumberpicker.internal
 
+import android.graphics.Color
 import android.view.View
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ internal sealed class InputView<T, Picker> where T : Number, T : Comparable<T>, 
             value: T,
             smooth: Boolean
         ) {
+            editText.setTextColor(Color.WHITE)
             editText.setText(setup.formatter(value))
         }
 
